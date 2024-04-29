@@ -11,5 +11,5 @@
 ```
 docker compose up -d
 cd quizzeo
-npm dev
+npm run dev
 ```
