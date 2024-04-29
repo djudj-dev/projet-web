@@ -15,10 +15,10 @@ datasource db {
 
 model User {
   id String @id @default(uuid())
-  email String
+  email String @unique
   role Role
-  enabled Boolean
-  quiz Quiz[]
+  enabled Boolean @default(false)
+  quiz Quiz[] 
   results Result[]
   logs Logs[]
 }
