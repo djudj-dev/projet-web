@@ -9,5 +9,7 @@
 ## Launch Projet :
 
 ```
-$ unkown for now ..
+docker compose up -d
+cd quizzeo
+npm dev
 ```
