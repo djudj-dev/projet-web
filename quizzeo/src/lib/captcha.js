@@ -30,7 +30,7 @@ function verifyCaptcha(userInput, captcha) {
 }
 
 module.exports = {
-    genererCaptcha,
-    longueurCaptchaParDefaut,
-    verifierCaptcha
+    generercaptcha,
+    captchaLength,
+    verifyCaptcha
 };
