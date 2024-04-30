@@ -5,7 +5,7 @@ import Image from "next/image";
 const SideBar = () => {
     return (
         <>
-            <aside className=" text-[#84602C] flex flex-col justify-between items-center w-[197px] shadow-custom">
+            <aside className="fixed top-0 left-0 h-screen text-[#84602C] flex flex-col justify-between items-center w-[197px] shadow-custom bg-white">
                 <div className="flex flex-col justify-center items-center gap-10">
                     <Image
                         src="/QuizzeoIcon.svg"
