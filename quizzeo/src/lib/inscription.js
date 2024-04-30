@@ -5,12 +5,12 @@ const prisma = prismaClientSingleton();
 
 
 // Fonction d'inscription
-async function signup(login, password) {
+async function signup(email, password) {
     try {
         // Vérifier si l'utilisateur existe déjà
-        const existingUser = await prisma.login.findUnique({
+        const existingUser = await prisma.user.findUnique({
             where: {
-                login: login,
+                email: email,
             },
         });
 
@@ -24,9 +24,9 @@ async function signup(login, password) {
         // Créer un nouvel utilisateur dans la base de données
         const newUser = await prisma.user.create({
             data: {
-                login : login,
+                email : email,
                 password: hashedPassword,
-                // Autres champs de l'utilisateur...
+                role: "user",
             },
         });
 
