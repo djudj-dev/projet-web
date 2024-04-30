@@ -3,7 +3,7 @@ import React from "react";
 const CreateQuizButton = () => {
     return (
         <>
-            <button className="flex justify-between items-center bg-[#84602C] text-sm text-white px-2 py-[6px] gap-[10px]">
+            <button className="flex justify-between items-center bg-[#84602C] text-sm text-white px-2 py-[6px] gap-[10px] rounded">
                 <svg
                     width="14"
                     height="14"
