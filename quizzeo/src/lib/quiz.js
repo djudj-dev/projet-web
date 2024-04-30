@@ -56,5 +56,18 @@ export const quiz = {
                 }
             }
         )
-    )
+    ),
+    getAll: async() => (
+        await prisma.quiz.findMany(
+            {
+                select: {
+                    id: true,
+                    title: true,
+                    enabled: true,
+                    creator: true,
+                    questions: true,
+                }
+            }
+        )
+    ),
 }
