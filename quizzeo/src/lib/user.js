@@ -73,13 +73,15 @@ async function UsermodifyPassword(userId, NewPassword){
             },
           });
           
+          
           if (user) {
+              const hashedPassword = await bcrypt.hash(NewPassword, 10);
               await prisma.user.update({
                 where: {
                   id: userId,
                 },
                 data: {
-                  password: NewPassword,
+                  password: hashedPassword,
                 },
               });
               console.log("Mot de passe modifié avec succès !");
@@ -93,4 +95,4 @@ async function UsermodifyPassword(userId, NewPassword){
     }
 }
 
-export { UsermodifyEmail, AdminmodifyEmail };
+export { UsermodifyEmail, AdminmodifyEmail, UsermodifyPassword };
