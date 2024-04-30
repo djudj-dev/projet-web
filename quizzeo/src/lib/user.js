@@ -61,98 +61,65 @@ export const user = {
         id: userId
       }
     })
-  )
-}
-// Modifier email quand on est user
-async function UsermodifyEmail(userId, NewEmail){
+  ),
+  changePassword: async ({ userId, password, newPassword }) => {
+    try {
+      const user = await prisma.user.findUnique({
+          where: {
+            id: userId,
+          },
+        });
+
+        if (!user) {
+          throw new Error('Identifiant incorrect');
+        }
+  
+        if (!await bcrypt.compare(password, user.password)) {
+          throw new Error('Ancien mot de passe incorrect');
+        }
+        
+        
+        const hashedPassword = await bcrypt.hash(newPassword, passwordSalt);
+
+        return await prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            password: hashedPassword,
+          },
+        }); 
+    } catch (error) {
+        console.log(error);
+
+        return false;
+    }
+  },
+  changeEmail: async ({ userId, newEmail }) => {
 
     try {
         const user = await prisma.user.findUnique({
-            where: {
-              id: userId,
-            },
-          });
-          
-          if (user) {
-              await prisma.user.update({
-                where: {
-                  id: userId,
-                },
-                data: {
-                  email: NewEmail,
-                },
-              });
-              console.log("Email modifié avec succès !");
-          } else {
-            console.log("Modification impossible");
-          }
+          where: {
+            id: userId,
+          },
+        });
+
+        if (!user) {
+          throw new Error('Identifiant incorrect');
+        }
         
+        
+        return await prisma.user.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            email: newEmail,
+          },
+        });
     } catch (error) {
-        console.error("Erreur lors de la modification de l'email :", error);
+        console.log(error);
         throw error;
     }
+  }
 }
-
-// Modifier email quand on est admin
-async function AdminmodifyEmail(email, NewEmail){
-
-    try {
-        const user = await prisma.user.findUnique({
-            where: {
-              email: email,
-            },
-          });
-          
-          if (user) {
-              await prisma.user.update({
-                where: {
-                  email: userId,
-                },
-                data: {
-                  email: NewEmail,
-                },
-              });
-              console.log("Email modifié avec succès !");
-          } else {
-            console.log("Modification impossible");
-          }
-        
-    } catch (error) {
-        console.error("Erreur lors de la modification de l'email :", error);
-        throw error;
-    }
-}
-
-// Modifier password quand on est user
-async function UserModifyPassword(userId, NewPassword){
-
-    try {
-        const user = await prisma.user.findUnique({
-            where: {
-              id: userId,
-            },
-          });
-          
-          
-          if (user) {
-              const hashedPassword = await bcrypt.hash(NewPassword, 10);
-              await prisma.user.update({
-                where: {
-                  id: userId,
-                },
-                data: {
-                  password: hashedPassword,
-                },
-              });
-              console.log("Mot de passe modifié avec succès !");
-          } else {
-            console.log("Modification impossible");
-          }
-        
-    } catch (error) {
-        console.error("Erreur lors de la modification du mot de passe :", error);
-        throw error;
-    }
-}
-
-export { UsermodifyEmail, AdminmodifyEmail, UserModifyPassword };

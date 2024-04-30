@@ -1,5 +1,5 @@
-import { Redirection } from "../components/client-auth"
-import { PuffLoader, PulseLoader } from "react-spinners" 
+import { Redirection } from "../components/auth-redirection"
+import { PulseLoader } from "react-spinners" 
 
 export default function Page() {
     return (

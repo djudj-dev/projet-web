@@ -12,6 +12,9 @@ const fetchApi = async(apiRoute, method, body = undefined) => {
         body: JSON.stringify(body)
     })
 
+    if(!response.ok) {
+        throw new Error('Error with api fetching')
+    }
     const data = await response.json();
     
     return data;

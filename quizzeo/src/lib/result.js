@@ -22,7 +22,12 @@ export const result = {
             select: {
                 id: true,
                 score: true,
-                quizId: true,
+                quiz: {
+                    select: {
+                        title: true
+                    }
+                },
+                date: true
             }
         })
     )

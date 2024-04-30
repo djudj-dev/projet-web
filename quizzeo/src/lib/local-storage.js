@@ -10,5 +10,10 @@ export const localJwt = {
         if (typeof window !== 'undefined') {
             localStorage.setItem('jwt', jwt)
        }
+    },
+    remove: (jwt) => {
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('jwt')
+       }
     }
 };

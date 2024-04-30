@@ -6,7 +6,7 @@ import { postApi } from "../../../lib/client-fetch";
 import { ReactQueryProvider } from "../../../components/react-query";
 import { useMutation } from "react-query";
 import { Captcha } from "../../../components/captcha";
-import { Redirection } from "../../../components/client-auth";
+import { Redirection } from "../../../components/auth-redirection";
 import { localJwt } from "../../../lib/local-storage";
 
 const LoginForm = () => {
@@ -22,7 +22,6 @@ const LoginForm = () => {
     const onSubmit = async ({ email, password}) => {
         
         if(!email || !password || !captchaResolve) {
-            console.log(false)
             return 
         }
 
@@ -78,7 +77,7 @@ const LoginForm = () => {
                 />
             </div>
             <Captcha setCaptaResolve={setCaptaResolve}/>
-            {data === "Forbidden" && <p className="text-center font-bold text-red-600 mb-4">L'identification à echoué</p> }
+            {error && <p className="text-center font-bold text-red-600 mb-4">L'identification à echoué</p> }
             <button
                 type="submit"
                 className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"

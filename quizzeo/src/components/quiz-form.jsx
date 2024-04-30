@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMutation } from "react-query";
 import { ReactQueryProvider } from "../components/react-query";
 import { postApi } from "../lib/client-fetch";
-import { localJwt } from "../lib/local-storage";
+import { useAuth } from "../lib/useAuth";
 
 export const QuizForm = ({ quizz }) => {
     const [questionCount, setQuestionCount] = useState(3);
@@ -12,13 +12,13 @@ export const QuizForm = ({ quizz }) => {
         shouldUseNativeValidation: true
     });
 
+    const { user } = useAuth();
+
     const { data, error, mutate } = useMutation(body => 
         postApi("result", body)
     );
 
-    const onSubmit = (data) =>{
-        const jwt = localJwt.get() || '15';
-
+    const onSubmit = (data) => {
         const stats = {
             goodReply: 0,
             questionsNumber: quizz.questions.length
@@ -35,7 +35,7 @@ export const QuizForm = ({ quizz }) => {
 
         mutate({
             score,
-            userId: jwt,
+            userId: user.id,
             quizId: quizz.id
         })
     }

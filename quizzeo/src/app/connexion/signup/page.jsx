@@ -6,7 +6,7 @@ import { postApi } from "../../../lib/client-fetch";
 import { ReactQueryProvider } from "../../../components/react-query";
 import { Captcha } from "../../../components/captcha"
 import { useMutation } from "react-query";
-import { Redirection } from "../../../components/client-auth";
+import { Redirection } from "../../../components/auth-redirection";
 import { localJwt } from "../../../lib/local-storage";
  
 const SignupForm = () => {
@@ -22,8 +22,6 @@ const SignupForm = () => {
     );
 
     const onSubmit = async ({ email, password, confirmPassword }) => {
-
-        console.log(captchaResolve);
         if(!email || !password || !confirmPassword || !captchaResolve) {
             return 
         }

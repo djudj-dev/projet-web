@@ -10,7 +10,7 @@ const QuizListTile = ({
     setTileAnswersNumber, // Prop pour le nombre de réponses au quiz
 }) => {
     return (
-        <div className="flex flex-col gap-3 w-[412px] shadow-tile bg-white rounded p-[10px] text-sm">
+        <div className="flex flex-col gap-3 w-11/12 m-auto shadow-tile bg-white rounded p-[10px] text-sm">
             {/* Conteneur principal avec styles pour la tuile */}
             <div className="flex justify-between">
                 {/* Conteneur pour le statut et la date de création */}

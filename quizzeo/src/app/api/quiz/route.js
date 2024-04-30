@@ -6,7 +6,6 @@ export async function POST (request) {
     const { title, creatorId, questions } = await request.json();
 
     const newQuiz = await quiz.create({ title, creatorId })
-    console.log(questions)
 
     for (const index in questions) {
         await question.create({ ...questions[index], quizId: newQuiz.id })
