@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { generateCaptcha, verifyCaptcha } from "../lib/captcha"
 
 const captchaLengh = 5
@@ -12,7 +12,9 @@ export const Captcha = ({ setCaptaResolve }) => {
         setCaptcha(generateCaptcha(captchaLengh))
     }
 
-    setCaptaResolve(verifyCaptcha(answer, captcha))
+    useEffect(() => {
+        setCaptaResolve(verifyCaptcha(answer, captcha))
+    }, [answer, captcha])
 
     return (
         <div className="w-full p-3 border rounded-md mb-4 justify-center items-center">

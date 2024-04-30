@@ -1,15 +1,17 @@
 'use client'
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { postApi } from "../../../lib/client-fetch";
 import { ReactQueryProvider } from "../../../components/react-query";
 import { useMutation } from "react-query";
-import { Captcha } from "../../../components/captcha"
-import { localJwt } from "../../../lib/jwt-tools";
+import { Captcha } from "../../../components/captcha";
+import { Redirection } from "../../../components/client-auth";
+import { localJwt } from "../../../lib/local-storage";
 
 const LoginForm = () => {
     const [captchaResolve, setCaptaResolve] = useState(false);
+    const [redirect, setRedirect] = useState(false);
     const { register, handleSubmit } = useForm({
         shouldUseNativeValidation: true
     });
@@ -18,16 +20,29 @@ const LoginForm = () => {
     );
 
     const onSubmit = async ({ email, password}) => {
-
+        
         if(!email || !password || !captchaResolve) {
+            console.log(false)
             return 
         }
 
         mutate({ email, password })
 
         if(!error && data && data.jwt) {
-            localJwt.set(data.jwt)
+            localJwt.set(data.jwt);
+            setRedirect(true);
         }
+    }
+
+    useMemo(() => {
+        if (!error && data && data.jwt) {
+            localJwt.set(data.jwt);
+            setRedirect(true);
+        }
+    },[data, error])
+
+    if (redirect) {
+        return <Redirection />
     }
 
     return (
@@ -63,6 +78,7 @@ const LoginForm = () => {
                 />
             </div>
             <Captcha setCaptaResolve={setCaptaResolve}/>
+            {data === "Forbidden" && <p className="text-center font-bold text-red-600 mb-4">L'identification à echoué</p> }
             <button
                 type="submit"
                 className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"

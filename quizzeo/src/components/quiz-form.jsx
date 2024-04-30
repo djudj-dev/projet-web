@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMutation } from "react-query";
 import { ReactQueryProvider } from "../components/react-query";
 import { postApi } from "../lib/client-fetch";
-import { localJwt } from "../lib/jwt-tools";
+import { localJwt } from "../lib/local-storage";
 
 export const QuizForm = ({ quizz }) => {
     const [questionCount, setQuestionCount] = useState(3);

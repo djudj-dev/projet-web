@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
-import { generateJwt } from "../../../lib/jwt-tools";
-import { connexion } from "../../../lib/connexion";
+import { generateJwt, verifyJwt } from "../../../lib/jwt-tools";
+import { user } from "../../../lib/user";
 
 export async function POST (request) {
-    console.log(request)
     const { email, password }  = await request.json()
-    user = connexion(email, password)
-    const jwt = await generateJwt(user.id)
-    return NextResponse.json({ jwt }, { status: 404 });
+    const currentUser = await user.login({ email, password });
+
+    if(!currentUser) {
+        
+        return NextResponse.json("Forbidden", { status: 403 });
+    }
+    
+    const jwt = await generateJwt(currentUser.id);
+
+    return NextResponse.json({ jwt, user: currentUser}, { status: 200 });
 }

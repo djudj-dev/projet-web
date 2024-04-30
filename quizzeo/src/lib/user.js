@@ -1,8 +1,68 @@
 import { prisma } from "./prisma";
 import bcrypt from 'bcrypt';
 
-const prisma = prismaClientSingleton();
+const passwordSalt = Number(process.env.PASSWOARD_SALT);
 
+export const user = {
+  login: async ({ email, password }) => {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          email: email,
+          enabled: true
+        },
+      });
+
+      if (!user) {
+        throw new Error('Identifiant incorrect ou compte non activé');
+      }
+
+      if (!await bcrypt.compare(password, user.password)) {
+        throw new Error('Mot de passe incorrect');
+      }
+
+      return user;
+    } catch (error) {
+      console.log(error)
+      return false;
+    }
+  },
+  signup: async ({ email, password, role }) => {
+    try {
+      const existingUser = await prisma.user.findUnique({
+        where: {
+          email: email,
+        },
+      });
+
+      if (existingUser) {
+        throw new Error('Cet identifiant est déjà utilisé.');
+      }
+
+      const hashedPassword = await bcrypt.hash(password, passwordSalt);
+
+      const newUser = await prisma.user.create({
+          data: {
+            email : email,
+            password: hashedPassword,
+            role,
+          },
+      });
+
+      return newUser;
+    } catch (error) {
+      console.log(error)
+      return false;
+    }
+  },
+  findById: async (userId) => (
+    prisma.user.findUnique({
+      where: {
+        id: userId
+      }
+    })
+  )
+}
 // Modifier email quand on est user
 async function UsermodifyEmail(userId, NewEmail){
 
@@ -64,7 +124,7 @@ async function AdminmodifyEmail(email, NewEmail){
 }
 
 // Modifier password quand on est user
-async function UsermodifyPassword(userId, NewPassword){
+async function UserModifyPassword(userId, NewPassword){
 
     try {
         const user = await prisma.user.findUnique({
@@ -95,4 +155,4 @@ async function UsermodifyPassword(userId, NewPassword){
     }
 }
 
-export { UsermodifyEmail, AdminmodifyEmail, UsermodifyPassword };
+export { UsermodifyEmail, AdminmodifyEmail, UserModifyPassword };

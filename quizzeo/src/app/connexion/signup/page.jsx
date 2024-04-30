@@ -1,15 +1,17 @@
 'use client'
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { postApi } from "../../../lib/client-fetch";
 import { ReactQueryProvider } from "../../../components/react-query";
 import { Captcha } from "../../../components/captcha"
 import { useMutation } from "react-query";
-import { localJwt } from "../../../lib/jwt-tools";
+import { Redirection } from "../../../components/client-auth";
+import { localJwt } from "../../../lib/local-storage";
  
 const SignupForm = () => {
     const [errorText, setErrorText] = useState('');
+    const [redirect, setRedirect] = useState(false);
     const [captchaResolve, setCaptaResolve] = useState(false);
 
     const { register, handleSubmit } = useForm({
@@ -35,10 +37,20 @@ const SignupForm = () => {
         if(!errorText) {
             mutate({ email, password })
         }
+    }
 
-        if(!error && data && data.jwt) {
-            localJwt.set(data.jwt)
+    useMemo(() => {
+        if (!error && data && data.jwt) {
+            localJwt.set(data.jwt);
+            setRedirect(true);
         }
+    },[data, error])
+    
+    if (redirect) {
+
+        return <p>
+                Votre Inscription a été priten compte, vous pourrez vous connecter quand un adminactivera votre compte
+            </p>
     }
 
     return (

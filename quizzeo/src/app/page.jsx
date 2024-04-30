@@ -1,7 +1,11 @@
+import { Redirection } from "../components/client-auth"
+import { PuffLoader, PulseLoader } from "react-spinners" 
+
 export default function Page() {
     return (
-        <main>
-            <h1>HOME PAGE</h1>
-        </main>
+        <>
+            <Redirection />
+            <PulseLoader color="#36d7b7" />
+        </>
     );
 }
