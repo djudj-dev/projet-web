@@ -1,7 +1,7 @@
 import { prisma } from "./prisma"
 
-const result = {
-    create: async({
+export const result = {
+    create: async ({
         quizId,
         userId,
         score
@@ -14,5 +14,16 @@ const result = {
             }
         })
     ),
-
+    listByUser: async (userId) => (
+        await prisma.result.findMany({
+            where: {
+                userId
+            },
+            select: {
+                id: true,
+                score: true,
+                quizId: true,
+            }
+        })
+    )
 }
