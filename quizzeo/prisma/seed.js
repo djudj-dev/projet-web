@@ -18,7 +18,7 @@ async function main() {
     // Création d'un nouveau Quiz
     const newQuiz = await prisma.quiz.create({
         data: {
-            Title: "Question: Quelle est la couleur du cheval blanc d'Henri IV ?",
+            Title: "Questionnaire n°1",
             enabled: false,
             creatorId: newUser.id,
         },
@@ -51,6 +51,8 @@ async function main() {
     });
     console.log("Nouveau log:");
     console.log(newLogs);
+
+    //TODO: Création d'une question
 }
 
 main()
