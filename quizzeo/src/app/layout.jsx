@@ -10,8 +10,6 @@ export const metadata = {
     description: "Générateur de quizz en ligne",
 };
 
-
-
 export default function HomeLayout({ children }) {
     return (
         <html lang="fr" className="h-full">

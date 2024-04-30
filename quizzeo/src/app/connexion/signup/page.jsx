@@ -1,14 +1,17 @@
-"use client"
+'use client'
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { postApi } from "../../../lib/client-fetch";
 import { ReactQueryProvider } from "../../../components/react-query";
+import { Captcha } from "../../../components/captcha"
 import { useMutation } from "react-query";
 import { localJwt } from "../../../lib/jwt-tools";
  
 const SignupForm = () => {
     const [errorText, setErrorText] = useState('');
+    const [captchaResolve, setCaptaResolve] = useState(false);
+
     const { register, handleSubmit } = useForm({
         shouldUseNativeValidation: true
     });
@@ -18,11 +21,17 @@ const SignupForm = () => {
 
     const onSubmit = async ({ email, password, confirmPassword }) => {
 
+        console.log(captchaResolve);
+        if(!email || !password || !confirmPassword || !captchaResolve) {
+            return 
+        }
+
         if (password !== confirmPassword) {
             setErrorText('Les mot de passe ne correspondent pas')
         } else {
             setErrorText()
         }
+
         if(!errorText) {
             mutate({ email, password })
         }
@@ -82,6 +91,7 @@ const SignupForm = () => {
                     placeholder="Confirmez votre mot de passe"
                 />
             </div>
+            <Captcha setCaptaResolve={setCaptaResolve}/>
             {
                 errorText &&
                     <p className="text-center mb-4 font-bold text-red-600">{errorText}</p> 

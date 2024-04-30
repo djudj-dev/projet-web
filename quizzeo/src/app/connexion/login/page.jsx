@@ -1,13 +1,15 @@
-"use client"
+'use client'
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { postApi } from "../../../lib/client-fetch";
 import { ReactQueryProvider } from "../../../components/react-query";
 import { useMutation } from "react-query";
+import { Captcha } from "../../../components/captcha"
 import { localJwt } from "../../../lib/jwt-tools";
+
 const LoginForm = () => {
-    const [errorText, setErrorText] = useState('');
+    const [captchaResolve, setCaptaResolve] = useState(false);
     const { register, handleSubmit } = useForm({
         shouldUseNativeValidation: true
     });
@@ -15,17 +17,13 @@ const LoginForm = () => {
         postApi("login", body)
     );
 
-    const onSubmit = async ({ email, password, confirmPassword }) => {
+    const onSubmit = async ({ email, password}) => {
 
-        if (password !== confirmPassword) {
-            setErrorText('Les mot de passe ne correspondent pas')
-        } else {
-            setErrorText()
+        if(!email || !password || !captchaResolve) {
+            return 
         }
 
-        if(!errorText) {
-            mutate({ email, password })
-        }
+        mutate({ email, password })
 
         if(!error && data && data.jwt) {
             localJwt.set(data.jwt)
@@ -41,6 +39,7 @@ const LoginForm = () => {
                     Email
                 </label>
                 <input
+                    {...register('email')}
                     type="email"
                     id="email"
                     name="email"
@@ -55,6 +54,7 @@ const LoginForm = () => {
                     Mot de passe
                 </label>
                 <input
+                    {...register('password')}
                     type="password"
                     id="password"
                     name="password"
@@ -62,6 +62,7 @@ const LoginForm = () => {
                     placeholder="Entrez votre mot de passe"
                 />
             </div>
+            <Captcha setCaptaResolve={setCaptaResolve}/>
             <button
                 type="submit"
                 className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
@@ -82,7 +83,7 @@ export default function Page() {
                     <p className="text-sm mt-4">
                         Vous n'avez pas de compte ?{" "}
                         <Link
-                            href="/connexion/createAccount"
+                            href="/connexion/signup"
                             className="text-blue-500 hover:underline"
                         >
                             Créer un compte
