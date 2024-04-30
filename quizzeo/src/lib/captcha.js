@@ -28,3 +28,9 @@ function verifyCaptcha(userInput, captcha) {
         return false; 
     }
 }
+
+module.exports = {
+    genererCaptcha,
+    longueurCaptchaParDefaut,
+    verifierCaptcha
+};
