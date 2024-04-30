@@ -17,6 +17,7 @@ module.exports = {
             },
             boxShadow: {
                 custom: "3px -4px 4px 0px #00000040",
+                tile: "0px 4px 4px 0px #00000040",
             },
         },
     },
