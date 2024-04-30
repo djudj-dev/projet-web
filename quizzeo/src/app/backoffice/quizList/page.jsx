@@ -6,7 +6,7 @@ import QuizListTile from "../../../components/quizListTile";
 
 export default function Page() {
     return (
-        <main className="flex flex-col mt-[23px]">
+        <main className="flex flex-col mt-[23px] min-w-[800px]">
             <section className="flex justify-between">
                 <h1 className="text-4xl text-[#84602C]">Liste des quiz</h1>
                 <CreateQuizButton />
