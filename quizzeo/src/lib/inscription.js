@@ -32,7 +32,7 @@ async function signup(login, password) {
 
         return newUser;
     } catch (error) {
-        throw new Error(Erreur lors de l'inscription : ${error.message});
+        throw new Error(`Erreur lors de l'inscription : ${error.message}`);
     }
 }
 
