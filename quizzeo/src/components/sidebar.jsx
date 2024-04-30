@@ -16,7 +16,7 @@ const SideBar = () => {
                     />
                     <nav className="flex flex-col w-[147px] gap-4">
                         <Link
-                            href="#"
+                            href="/backoffice/quizList"
                             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
                         >
                             <Image
@@ -42,7 +42,7 @@ const SideBar = () => {
                             Répondants
                         </Link>
                         <Link
-                            href="#"
+                            href="/backoffice/statistics"
                             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
                         >
                             <Image
