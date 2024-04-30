@@ -9,5 +9,5 @@ export async function POST (request) {
     // change test by user id
 
     const jwt = await generateJwt('test')
-    return NextResponse.json({ jwt });
+    return NextResponse.json({ jwt }, { status: 404 });
 }
