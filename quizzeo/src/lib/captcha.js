@@ -29,8 +29,3 @@ function verifyCaptcha(userInput, captcha) {
     }
 }
 
-module.exports = {
-    genererCaptcha,
-    longueurCaptchaParDefaut,
-    verifierCaptcha
-};
