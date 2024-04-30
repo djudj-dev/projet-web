@@ -9,7 +9,7 @@ const prisma = prismaClientSingleton();
 async function connexion(email, password) {
     try {
         // Recherche de l'utilisateur dans la base de données
-        const user = await prisma.user.findUnique({
+        const user = await prisma.User.findUnique({
             where: {
                 email: email,
             },
