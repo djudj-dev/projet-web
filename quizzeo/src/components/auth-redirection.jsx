@@ -35,6 +35,8 @@ const ClientAuth = ({ jwt }) => {
                 redirect('/user/home');
             case 'QuizAdmin' :
                 redirect('/quiz-admin/home');
+            case 'UserAdmin' :
+                redirect('/user-admin/home');
             case 'QuizCreator' :
                 redirect('/quiz-creator/home');
             default:

@@ -62,24 +62,101 @@ export const user = {
             },
         }),
     // Pour obtenir la liste de tous les utilisateurs
-    getAllUsers: async () => {
+    getAllUsers: async (userId) => {
         try {
-            const users = await prisma.user.findMany({
-                include: {
-                    quiz: true,
-                    results: true,
-                    logs: true,
+            const currentUser = await prisma.user.findUnique({
+                where: {
+                    id: userId,
                 },
             });
-            console.log("Liste des utilisateurs :");
-            console.log(users);
+
+            if (!currentUser) {
+                throw new Error("Identifiant incorrect");
+            }
+
+            if (!(currentUser.role === "GlobalAdmin" || currentUser.role === 'UserAdmin')) {
+                return false;
+            }
+
+            const users = await prisma.user.findMany({
+                where: {
+                    NOT: { id: userId } 
+                }
+            });
+
             return users;
+
         } catch (error) {
             console.error(
                 "Erreur lors de la récupération des utilisateurs :",
                 error
             );
-            throw error; // Relancer l'erreur pour qu'elle puisse être gérée ailleurs
+           
+            return false;
+        }
+    },
+    changeRole: async ({ userId, userToChange, newRole }) => {
+        try {
+            const currentUser = await prisma.user.findUnique({
+                where: {
+                    id: userId,
+                },
+            });
+
+            if (!currentUser) {
+                throw new Error("Identifiant incorrect");
+            }
+
+            if (!(currentUser.role === "GlobalAdmin" || currentUser.role === 'UserAdmin')) {
+                return false;
+            }
+
+            const user = await prisma.user.update({
+                where: {
+                    id: userToChange.id
+                },
+                data: {
+                    role: newRole
+                }
+            });
+
+            return user;
+        } catch (error) {
+            console.log(error);
+           
+            return false;
+        }
+    },
+    changeStatus: async ({ userId, userToChange, newStatus }) => {
+        try {
+            const currentUser = await prisma.user.findUnique({
+                where: {
+                    id: userId,
+                },
+            });
+
+            if (!currentUser) {
+                throw new Error("Identifiant incorrect");
+            }
+
+            if (!(currentUser.role === "GlobalAdmin" || currentUser.role === 'UserAdmin')) {
+                return false;
+            }
+
+            const user = await prisma.user.update({
+                where: {
+                    id: userToChange.id
+                },
+                data: {
+                    enabled: newStatus
+                }
+            });
+
+            return user;
+        } catch (error) {
+            console.log(error);
+           
+            return false;
         }
     },
     changePassword: async ({ userId, password, newPassword }) => {

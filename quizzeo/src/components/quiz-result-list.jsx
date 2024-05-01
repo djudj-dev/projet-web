@@ -20,7 +20,6 @@ export const QuizResultList = ({ user }) => {
                 }
                 {
                     Object.values(data).map((value) =>  {
-                        console.log(value)
                         const {
                             date,
                             score,
@@ -34,5 +33,6 @@ export const QuizResultList = ({ user }) => {
             </>
         )
     }
+
     return <Spinner />
 }

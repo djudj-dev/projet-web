@@ -186,6 +186,50 @@ const QuizCreatorNav = () => (
 )
 
 
+const UserAdminNav = () => (
+    <nav className="flex flex-col w-[147px] gap-4">
+        <Link
+            href="/user-admin/home"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/dashboardIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Vos Infos
+        </Link>
+        <Link
+            href="/user-admin/user-list"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/leaderboardIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Utilisateurs
+        </Link>
+        <Link
+            href="/connexion/logout"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/assignementIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Déconnexion
+        </Link>
+    </nav>
+)
+
 const UserNav = () => (
     <nav className="flex flex-col w-[147px] gap-4">
         <Link
@@ -222,6 +266,9 @@ export const SideBar = ({ userType }) => {
                     }
                     {
                         userType === "QuizAdmin" && <QuizAdminNav />
+                    }
+                    {
+                        userType === "UserAdmin" && <UserAdminNav />
                     }
                     {
                         userType === "QuizCreator" && <QuizCreatorNav />
