@@ -9,7 +9,7 @@ export const quiz = {
             data: {
                 title,
                 creatorId,
-                enabled: false,
+                status: "Draft",
             }
         })
     ),
@@ -20,7 +20,7 @@ export const quiz = {
                     id: quizId
                 },
                 data: {
-                    enabled: status
+                    status
                 }
             }
         )
@@ -36,7 +36,7 @@ export const quiz = {
                     title: true,
                     id: true,
                     creator: true,
-                    enabled: true
+                    status: true
                 }
             }
         )
@@ -50,9 +50,10 @@ export const quiz = {
                 select: {
                     id: true,
                     title: true,
-                    enabled: true,
+                    status: true,
                     creator: true,
-                    questions: true,
+                    results: true,
+                    date: true,
                 }
             }
         )

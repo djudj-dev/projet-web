@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const AdminSideBar = () => (
+const AdminNav = () => (
     <nav className="flex flex-col w-[147px] gap-4">
         <Link
             href="/backoffice/quizList"
@@ -55,10 +55,100 @@ const AdminSideBar = () => (
             />
             Quiz
         </Link>
+        <Link
+            href="/connexion/logout"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/assignementIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Déconnexion
+        </Link>
+    </nav>
+)
+
+const QuizAdminNav = () => (
+    <nav className="flex flex-col w-[147px] gap-4">
+        <Link
+            href="/quiz-admin/home"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/dashboardIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Vos Infos
+        </Link>
+        <Link
+            href="/quiz-admin/quiz-list"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/dashboardIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Quiz
+        </Link>
+        <Link
+            href="/quiz-admin/statistics"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/leaderboardIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Statistiques
+        </Link>
+        <Link
+            href="/connexion/logout"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/assignementIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Déconnexion
+        </Link>
+    </nav>
+)
+
+
+const UserNav = () => (
+    <nav className="flex flex-col w-[147px] gap-4">
+        <Link
+            href="/connexion/logout"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/assignementIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Déconnexion
+        </Link>
     </nav>
 )
 
 export const SideBar = ({ userType }) => {
+    console.log(userType)
     return (
         <>
             <aside className="w-1/6 min-w-36 max-w-48  h-screen text-[#84602C] flex flex-col justify-between items-center shadow-custom bg-white">
@@ -71,21 +161,14 @@ export const SideBar = ({ userType }) => {
                         height={96}
                     />
                     {
-                        userType === "Admin" && <AdminSideBar />
+                        userType === "Admin" && <AdminNav />
                     }
-                    <Link
-                        href="/connexion/logout"
-                        className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
-                    >
-                        <Image
-                            src="/assignementIcon.svg"
-                            alt=""
-                            className=""
-                            width={18}
-                            height={18}
-                        />
-                        Déconnexion
-                    </Link>
+                    {
+                        userType === "QuizAdmin" && <QuizAdminNav />
+                    }
+                    {
+                        userType === "User" && <UserNav />
+                    }
                 </div>
             </aside>
         </>

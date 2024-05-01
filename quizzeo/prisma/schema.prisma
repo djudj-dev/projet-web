@@ -28,7 +28,7 @@ model User {
 model Quiz {
   id String @id @default(uuid())
   title String
-  enabled Boolean
+  status QuizStatus @default(Draft)
   creator User @relation(fields: [creatorId], references: [id])
   creatorId String
   questions Question[]
@@ -80,8 +80,14 @@ enum Action {
 
 enum Role {
   GlobalAdmin
-  AccountValidator
   QuizAdmin
   QuizCreator
   User
+  UserAdmin
+}
+
+enum QuizStatus {
+  Draft
+  Enabled
+  Finish
 }

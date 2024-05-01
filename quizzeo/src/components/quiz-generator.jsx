@@ -4,7 +4,10 @@ import { useState } from "react";
 import { useMutation } from "react-query";
 import { ReactQueryProvider } from "../components/react-query";
 import { postApi } from "../lib/client-fetch";
+import { useAuth } from "../lib/useAuth";
 import { localJwt } from "../lib/local-storage";
+import { Spinner } from "./spinner";
+import { Redirection } from "./auth-redirection";
 
 export const QuestionCreator = ({ register, unregister, questionNumber }) => {
     const [answerCount, setAnswerCount] = useState(2);
@@ -81,23 +84,30 @@ export const QuizCreator = () => {
     const { register, handleSubmit, unregister } = useForm({
         shouldUseNativeValidation: true
     });
-    const { data, error, mutate } = useMutation(body => 
+    const { data, error, isLoading, mutate } = useMutation(body => 
         postApi("quiz", body)
     );
 
-    const onSubmit = (data) =>{
-        const jwt = localJwt.get() || '15';
-        console.log(data)
-        const { quizTitle, questions } = data;
+    const { user } = useAuth();
+
+    const onSubmit = ({ quizTitle, questions }) => {
         questions.forEach(({ goodAnswer }, index) => questions[index].goodAnswer = Number(goodAnswer))
 
         mutate({
             title: quizTitle,
-            creatorId: jwt,
+            creatorId: user.id,
             questions
         })
     }
 
+    if (isLoading) {
+        return <Spinner />
+    }
+
+    if (data) {
+        return <Redirection />
+    } 
+    
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
