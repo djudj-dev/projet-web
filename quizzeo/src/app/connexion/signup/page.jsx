@@ -1,54 +1,56 @@
-'use client'
+"use client";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { postApi } from "../../../lib/client-fetch";
 import { ReactQueryProvider } from "../../../components/react-query";
-import { Captcha } from "../../../components/captcha"
+import { Captcha } from "../../../components/captcha";
 import { useMutation } from "react-query";
 import { Redirection } from "../../../components/auth-redirection";
 import { localJwt } from "../../../lib/local-storage";
- 
+
 const SignupForm = () => {
-    const [errorText, setErrorText] = useState('');
+    const [errorText, setErrorText] = useState("");
     const [redirect, setRedirect] = useState(false);
     const [captchaResolve, setCaptaResolve] = useState(false);
 
     const { register, handleSubmit } = useForm({
-        shouldUseNativeValidation: true
+        shouldUseNativeValidation: true,
     });
-    const { data, error, mutate } = useMutation(body => 
+    const { data, error, mutate } = useMutation((body) =>
         postApi("signup", body)
     );
 
     const onSubmit = async ({ email, password, confirmPassword }) => {
-        if(!email || !password || !confirmPassword || !captchaResolve) {
-            return 
+        if (!email || !password || !confirmPassword || !captchaResolve) {
+            return;
         }
 
         if (password !== confirmPassword) {
-            setErrorText('Les mot de passe ne correspondent pas')
+            setErrorText("Les mot de passe ne correspondent pas");
         } else {
-            setErrorText()
+            setErrorText();
         }
 
-        if(!errorText) {
-            mutate({ email, password })
+        if (!errorText) {
+            mutate({ email, password });
         }
-    }
+    };
 
     useMemo(() => {
         if (!error && data && data.jwt) {
             localJwt.set(data.jwt);
             setRedirect(true);
         }
-    },[data, error])
-    
-    if (redirect) {
+    }, [data, error]);
 
-        return <p>
-                Votre Inscription a été priten compte, vous pourrez vous connecter quand un adminactivera votre compte
+    if (redirect) {
+        return (
+            <p>
+                Votre Inscription a été prise compte. Vous pourrez vous
+                connecter lorsque qu'un administrateur aura activé votre compte.
             </p>
+        );
     }
 
     return (
@@ -61,7 +63,7 @@ const SignupForm = () => {
                     Email
                 </label>
                 <input
-                    {...register('email')}
+                    {...register("email")}
                     type="email"
                     id="email"
                     name="email"
@@ -77,7 +79,7 @@ const SignupForm = () => {
                     Mot de passe
                 </label>
                 <input
-                    {...register('password')}
+                    {...register("password")}
                     type="password"
                     id="password"
                     name="password"
@@ -93,7 +95,7 @@ const SignupForm = () => {
                     Confirmer le Mot de passe
                 </label>
                 <input
-                    {...register('confirmPassword')}
+                    {...register("confirmPassword")}
                     type="password"
                     id="confirmPassword"
                     name="confirmPassword"
@@ -101,11 +103,12 @@ const SignupForm = () => {
                     placeholder="Confirmez votre mot de passe"
                 />
             </div>
-            <Captcha setCaptaResolve={setCaptaResolve}/>
-            {
-                errorText &&
-                    <p className="text-center mb-4 font-bold text-red-600">{errorText}</p> 
-            }
+            <Captcha setCaptaResolve={setCaptaResolve} />
+            {errorText && (
+                <p className="text-center mb-4 font-bold text-red-600">
+                    {errorText}
+                </p>
+            )}
             <button
                 type="submit"
                 className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
@@ -121,7 +124,9 @@ export default function Page() {
         <ReactQueryProvider>
             <div className="bg-gray-100 min-h-screen flex items-center justify-center">
                 <div className="max-w-md w-full bg-white p-8 rounded shadow-md">
-                    <h2 className="text-2xl font-semibold mb-6">Créer un Compte</h2>
+                    <h2 className="text-2xl font-semibold mb-6">
+                        Créer un Compte
+                    </h2>
                     <SignupForm />
                     <p className="text-sm mt-4">
                         Vous avez déjà un compte ?{" "}
@@ -136,5 +141,4 @@ export default function Page() {
             </div>
         </ReactQueryProvider>
     );
-};
-
+}

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -13,47 +13,44 @@ const LoginForm = () => {
     const [captchaResolve, setCaptaResolve] = useState(false);
     const [redirect, setRedirect] = useState(false);
     const { register, handleSubmit } = useForm({
-        shouldUseNativeValidation: true
+        shouldUseNativeValidation: true,
     });
-    const { data, error, mutate } = useMutation(body => 
+    const { data, error, mutate } = useMutation((body) =>
         postApi("login", body)
     );
 
-    const onSubmit = async ({ email, password}) => {
-        
-        if(!email || !password || !captchaResolve) {
-            return 
+    const onSubmit = async ({ email, password }) => {
+        if (!email || !password || !captchaResolve) {
+            return;
         }
 
-        mutate({ email, password })
+        mutate({ email, password });
 
-        if(!error && data && data.jwt) {
+        if (!error && data && data.jwt) {
             localJwt.set(data.jwt);
             setRedirect(true);
         }
-    }
+    };
 
     useMemo(() => {
         if (!error && data && data.jwt) {
             localJwt.set(data.jwt);
             setRedirect(true);
         }
-    },[data, error])
+    }, [data, error]);
 
     if (redirect) {
-        return <Redirection />
+        return <Redirection />;
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-4">
-                <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                >
+                <label className="block text-gray-700 text-sm font-bold mb-2">
                     Email
                 </label>
                 <input
-                    {...register('email')}
+                    {...register("email")}
                     type="email"
                     id="email"
                     name="email"
@@ -62,13 +59,11 @@ const LoginForm = () => {
                 />
             </div>
             <div className="mb-6">
-                <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                >
+                <label className="block text-gray-700 text-sm font-bold mb-2">
                     Mot de passe
                 </label>
                 <input
-                    {...register('password')}
+                    {...register("password")}
                     type="password"
                     id="password"
                     name="password"
@@ -76,8 +71,12 @@ const LoginForm = () => {
                     placeholder="Entrez votre mot de passe"
                 />
             </div>
-            <Captcha setCaptaResolve={setCaptaResolve}/>
-            {error && <p className="text-center font-bold text-red-600 mb-4">L'identification à echoué</p> }
+            <Captcha setCaptaResolve={setCaptaResolve} />
+            {error && (
+                <p className="text-center font-bold text-red-600 mb-4">
+                    L'identification a échoué
+                </p>
+            )}
             <button
                 type="submit"
                 className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
@@ -108,4 +107,4 @@ export default function Page() {
             </div>
         </ReactQueryProvider>
     );
-};
+}
