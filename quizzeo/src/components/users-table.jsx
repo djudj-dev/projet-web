@@ -11,7 +11,6 @@ const RoleSelect = ({ user, actualUser}) => {
     );
 
     const changeRole = (role, userId, user) => {
-        console.log(role, userId, user)
         mutate({
             userId,
             newRole: role,

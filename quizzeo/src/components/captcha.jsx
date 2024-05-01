@@ -14,7 +14,7 @@ export const Captcha = ({ setCaptaResolve }) => {
 
     useEffect(() => {
         setCaptaResolve(verifyCaptcha(answer, captcha))
-    }, [answer, captcha])
+    }, [answer, captcha, setCaptaResolve])
 
     return (
         <div className="w-full p-3 border rounded-md mb-4 justify-center items-center">

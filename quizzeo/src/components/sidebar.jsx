@@ -1,10 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const AdminNav = () => (
+const GlobalAdminNav = () => (
     <nav className="flex flex-col w-[147px] gap-4">
         <Link
-            href="/backoffice/quizList"
+            href="/global-admin/home"
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
@@ -14,10 +14,10 @@ const AdminNav = () => (
                 width={18}
                 height={18}
             />
-            Quiz
+            Vos Infos
         </Link>
         <Link
-            href="/backoffice/usersList"
+            href="/global-admin/user-list"
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
@@ -30,7 +30,20 @@ const AdminNav = () => (
             Liste des users
         </Link>
         <Link
-            href="/backoffice/statistics"
+            href="/global-admin/create-user"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/assignementIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Créer un user
+        </Link>
+        <Link
+            href="/global-admin/statistics"
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
@@ -43,7 +56,7 @@ const AdminNav = () => (
             Statistiques
         </Link>
         <Link
-            href="#"
+            href="/global-admin/quiz-list"
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
@@ -248,38 +261,35 @@ const UserNav = () => (
     </nav>
 );
 
-export const SideBar = ({ userType }) => {
-    console.log(userType);
-    return (
-        <>
-            <aside className="w-1/6 min-w-36 max-w-48  h-screen text-[#84602C] flex flex-col justify-between items-center shadow-custom bg-white">
-                <div className="flex flex-col justify-center items-center gap-10">
-                    <Image
-                        src="/QuizzeoIcon.svg"
-                        alt="Logo Quizzeo"
-                        className="mt-[37px]"
-                        width={81}
-                        height={96}
-                    />
-                    {
-                        userType === "Admin" && <AdminNav />
-                    }
-                    {
-                        userType === "QuizAdmin" && <QuizAdminNav />
-                    }
-                    {
-                        userType === "UserAdmin" && <UserAdminNav />
-                    }
-                    {
-                        userType === "QuizCreator" && <QuizCreatorNav />
-                    }
-                    {
-                        userType === "User" && <UserNav />
-                    }
-                </div>
-            </aside>
-        </>
-    );
-};
+export const SideBar = ({ userType }) => (
+    <>
+        <aside className="w-1/6 min-w-36 max-w-48  h-screen text-[#84602C] flex flex-col justify-between items-center shadow-custom bg-white">
+            <div className="flex flex-col justify-center items-center gap-10">
+                <Image
+                    src="/QuizzeoIcon.svg"
+                    alt="Logo Quizzeo"
+                    className="mt-[37px]"
+                    width={81}
+                    height={96}
+                />
+                {
+                    userType === "GlobalAdmin" && <GlobalAdminNav />
+                }
+                {
+                    userType === "QuizAdmin" && <QuizAdminNav />
+                }
+                {
+                    userType === "UserAdmin" && <UserAdminNav />
+                }
+                {
+                    userType === "QuizCreator" && <QuizCreatorNav />
+                }
+                {
+                    userType === "User" && <UserNav />
+                }
+            </div>
+        </aside>
+    </>
+);
 
 export default SideBar;

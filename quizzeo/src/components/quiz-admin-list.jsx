@@ -19,8 +19,8 @@ export const QuizResultList = ({ user }) => {
                     <p>Vous n'avez fait aucun quiz pour l'instant</p>
                 }
                 {
-                    Object.values(data).map((quiz) =>  (
-                        <QuizStatList { ...{ quiz, user} } />
+                    Object.values(data).map((quiz, index) =>  (
+                        <QuizStatList { ...{ quiz, user, key: index}} />
                     ))
                 }
             </>

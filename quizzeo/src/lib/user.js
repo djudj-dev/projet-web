@@ -55,6 +55,49 @@ export const user = {
             return false;
         }
     },
+    adminCreate: async ({ email, password, role, enabled, adminId }) => {
+        try {
+            const adminUser = await prisma.user.findUnique({
+                where: {
+                    id: adminId,
+                },
+            });
+
+            if (!adminUser) {
+                throw new Error("Identifiant incorrect");
+            }
+
+            if (!(adminUser.role === "GlobalAdmin")) {
+                return false;
+            }
+
+            const existingUser = await prisma.user.findUnique({
+                where: {
+                    email: email,
+                },
+            });
+
+            if (existingUser) {
+                throw new Error("Cet identifiant est déjà utilisé.");
+            }
+
+            const hashedPassword = await bcrypt.hash(password, passwordSalt);
+
+            const newUser = await prisma.user.create({
+                data: {
+                    email: email,
+                    password: hashedPassword,
+                    role,
+                    enabled
+                },
+            });
+
+            return newUser;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    },
     findById: async (userId) =>
         prisma.user.findUnique({
             where: {

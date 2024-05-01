@@ -40,8 +40,6 @@ export const QuizForm = ({ quizz }) => {
         })
     }
 
-    console.log(data);
-
     if (isLoading) {
         return <Spinner />
     }

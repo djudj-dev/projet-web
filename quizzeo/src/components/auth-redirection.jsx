@@ -39,13 +39,15 @@ const ClientAuth = ({ jwt }) => {
                 redirect('/user-admin/home');
             case 'QuizCreator' :
                 redirect('/quiz-creator/home');
+            case 'GlobalAdmin' :
+                redirect('/global-admin/home');
             default:
                 redirect('/connexion/login');
         }
     }
 
     if (error) {
-        console.log(error)
+        console.log(error);
         redirect('/connexion/login');
     }
 }

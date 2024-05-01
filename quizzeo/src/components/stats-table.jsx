@@ -76,7 +76,7 @@ export const StatsTable = ({ user }) => {
                                                             : "#DCEED3", // sinon fond vert
                                                 }}
                                             >
-                                                { average ? `${average * 100} %` : 'Pas de donnée'}
+                                                { average ? `${Math.round(average * 100)} %` : 'Pas de donnée'}
                                             </div>
                                         </td>
                                         <td className="py-3 px-6 text-center">

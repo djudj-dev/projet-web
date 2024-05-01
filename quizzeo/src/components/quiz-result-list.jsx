@@ -19,7 +19,7 @@ export const QuizResultList = ({ user }) => {
                     <p>Vous n'avez fait aucun quiz pour l'instant</p>
                 }
                 {
-                    Object.values(data).map((value) =>  {
+                    Object.values(data).map((value, index) =>  {
                         const {
                             date,
                             score,
@@ -27,7 +27,7 @@ export const QuizResultList = ({ user }) => {
                                 title
                             }
                         } = value
-                        return <QuizResult { ...{score, title, date }} />
+                        return <QuizResult { ...{score, title, date, key: index }} />
                     })
                 }
             </>
