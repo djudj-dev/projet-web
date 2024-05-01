@@ -1,64 +1,52 @@
-const { PrismaClient, Role, Action } = require("@prisma/client");
-
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
-    // Création d'un nouvel User
-    const newUser = await prisma.user.create({
+    // Créer un utilisateur
+    const user = await prisma.user.create({
         data: {
-            email: "hello@gmail.com",
-            role: Role.User,
-            enabled: false,
+            email: "user@example.com",
+            password: "password123",
+            role: "User",
+            enabled: true,
         },
     });
 
-    console.log("Nouvel User:");
-    console.log(newUser);
-
-    // Création d'un nouveau Quiz
-    const newQuiz = await prisma.quiz.create({
+    // Créer un quiz
+    const quiz = await prisma.quiz.create({
         data: {
-            Title: "Questionnaire n°1",
-            enabled: false,
-            creatorId: newUser.id,
+            title: "Quiz sur les capitales",
+            enabled: true,
+            creatorId: user.id,
+            questions: {
+                create: [
+                    {
+                        title: "Quelle est la capitale de la France ?",
+                        answers: ["Paris", "Marseille", "Lyon", "Bordeaux"],
+                        goodAnswer: 0,
+                    },
+                    {
+                        title: "Quelle est la capitale de l'Italie ?",
+                        answers: ["Milan", "Rome", "Naples", "Turin"],
+                        goodAnswer: 1,
+                    },
+                ],
+            },
         },
     });
 
-    console.log("Nouveau Quiz:");
-    console.log(newQuiz);
-
-    // Création d'un nouveau Result
-    const newResult = await prisma.result.create({
+    // Créer un résultat
+    const result = await prisma.result.create({
         data: {
-            quizId: newQuiz.id,
-            userId: newUser.id,
-            answers: ["Bleu", "Blanc", "Rouge", "Vert"],
-            goodAnswer: 1,
+            quizId: quiz.id,
+            userId: user.id,
+            score: 80,
         },
     });
 
-    console.log("Nouveau Result:");
-    console.log(newResult);
-
-    // Création d'un nouveau log
-    const newLogs = await prisma.logs.create({
-        data: {
-            userId: newUser.id,
-            action: Action.loggin,
-            ip: "192.161.1.1",
-            additionalInformation: "Connexion OK",
-        },
-    });
-    console.log("Nouveau log:");
-    console.log(newLogs);
-
-    //TODO: Création d'une question
+    console.log("Données seedées avec succès");
 }
 
 main()
-    .catch((e) => {
-        throw e;
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
+    .catch((e) => console.error(e))
+    .finally(async () => await prisma.$disconnect());
