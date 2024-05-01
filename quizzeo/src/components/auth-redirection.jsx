@@ -33,6 +33,8 @@ const ClientAuth = ({ jwt }) => {
         switch(data.user.role) {
             case 'User' : 
                 redirect('/user/home');
+            case 'QuizAdmin' :
+                redirect('/quiz-admin/home');
             default:
                 redirect('/connexion/login');
         }

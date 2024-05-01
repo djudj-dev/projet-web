@@ -1,6 +1,6 @@
 import React from "react";
-import CreateQuizButton from "../../../components/CreateQuizButton";
-import StatsTable from "../../../components/statsTable";
+import CreateQuizButton from "../../../components/create-quiz-button";
+import StatsTable from "../../../components/stats-table";
 
 // Données à supprimer
 const mockData = [

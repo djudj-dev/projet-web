@@ -1,30 +1,30 @@
 'use client' 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { useMutation } from "react-query";
 import { ReactQueryProvider } from "../components/react-query";
 import { postApi } from "../lib/client-fetch";
 import { useAuth } from "../lib/useAuth";
+import { Spinner } from "./spinner";
+import { Redirection } from "./auth-redirection";
 
 export const QuizForm = ({ quizz }) => {
-    const [questionCount, setQuestionCount] = useState(3);
     const { register, handleSubmit, } = useForm({
         shouldUseNativeValidation: true
     });
 
     const { user } = useAuth();
 
-    const { data, error, mutate } = useMutation(body => 
+    const { data, isLoading, mutate } = useMutation(body => 
         postApi("result", body)
     );
 
-    const onSubmit = (data) => {
+    const onSubmit = ({ reply }) => {
         const stats = {
             goodReply: 0,
             questionsNumber: quizz.questions.length
         };
 
-        data.reply.forEach((value, index) => {
+        reply.forEach((value, index) => {
 
             if (quizz.questions[index].goodAnswer == value) {
                 stats.goodReply ++
@@ -39,6 +39,16 @@ export const QuizForm = ({ quizz }) => {
             quizId: quizz.id
         })
     }
+
+    console.log(data);
+
+    if (isLoading) {
+        return <Spinner />
+    }
+
+    if (data || quizz.status !== "Enabled") {
+        return <Redirection />
+    } 
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -69,7 +79,7 @@ export const QuizForm = ({ quizz }) => {
                 type="submit"
                 className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
             >
-                Créer le quiz
+                Répondre au Quiz
             </button>
         </form>
     )

@@ -1,6 +1,6 @@
 import React from "react";
-import CreateQuizButton from "../../../components/CreateQuizButton";
-import QuizListTile from "../../../components/quizListTile";
+import CreateQuizButton from "../../../components/create-quiz-button";
+import QuizListTile from "../../../components/quiz-stat-list";
 
 // Il s'agit de la page avec la liste des quiz
 
