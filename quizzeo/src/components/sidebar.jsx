@@ -126,7 +126,65 @@ const QuizAdminNav = () => (
             Déconnexion
         </Link>
     </nav>
-);
+)
+
+const QuizCreatorNav = () => (
+    <nav className="flex flex-col w-[147px] gap-4">
+        <Link
+            href="/quiz-creator/home"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/dashboardIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Vos Infos
+        </Link>
+        <Link
+            href="/quiz-creator/quiz-list"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/dashboardIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Quiz
+        </Link>
+        <Link
+            href="/quiz-creator/statistics"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/leaderboardIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Statistiques
+        </Link>
+        <Link
+            href="/connexion/logout"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/assignementIcon.svg"
+                alt=""
+                className=""
+                width={18}
+                height={18}
+            />
+            Déconnexion
+        </Link>
+    </nav>
+)
+
 
 const UserNav = () => (
     <nav className="flex flex-col w-[147px] gap-4">
@@ -159,20 +217,18 @@ export const SideBar = ({ userType }) => {
                         width={81}
                         height={96}
                     />
-                    {userType === "Admin" && <AdminSideBar />}
-                    <Link
-                        href="/connexion/logout"
-                        className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
-                    >
-                        <Image
-                            src="/assignementIcon.svg"
-                            alt=""
-                            className=""
-                            width={18}
-                            height={18}
-                        />
-                        Déconnexion
-                    </Link>
+                    {
+                        userType === "Admin" && <AdminNav />
+                    }
+                    {
+                        userType === "QuizAdmin" && <QuizAdminNav />
+                    }
+                    {
+                        userType === "QuizCreator" && <QuizCreatorNav />
+                    }
+                    {
+                        userType === "User" && <UserNav />
+                    }
                 </div>
             </aside>
         </>

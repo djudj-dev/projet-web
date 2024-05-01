@@ -5,7 +5,7 @@ import { CreateQuizButton } from "../../../components/create-quiz-button";
 
 
 export default function Page () {
-    const { user } = useAuth('QuizAdmin');
+    const { user } = useAuth('QuizCreator');
 
     return (
         <div className="flex flex-col mt-[23px] min-w-[800px]">

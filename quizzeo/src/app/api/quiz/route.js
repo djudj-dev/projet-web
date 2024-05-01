@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { quiz } from "../../../lib/quiz";
 import { question } from "../../../lib/question";
+import { request } from "http";
 
 export async function POST (request) {
     const { title, creatorId, questions } = await request.json();

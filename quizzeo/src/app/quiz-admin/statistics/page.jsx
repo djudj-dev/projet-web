@@ -6,7 +6,7 @@ import StatsTable from "../../../components/stats-table";
 
 
 export default function Page () {
-    const { user } = useAuth();
+    const { user } = useAuth('QuizAdmin');
 
     return (
         <div className="flex flex-col mt-[23px] min-w-[800px]">

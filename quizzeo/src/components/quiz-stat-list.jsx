@@ -1,21 +1,53 @@
-import React from "react";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+import React from "react";
+import { useMutation } from "react-query"
+import { postApi } from "../lib/client-fetch";
+import { Spinner } from "./spinner";
 
-export const QuizStatList = ({ quiz }) => {
-
+export const QuizStatList = ({ quiz, user }) => {
     const {
         title,
         id,
         creatorId,
         date,
         results,
-        status
+        enabled
     } = quiz
+    
+    const { data, isLoading, mutate } = useMutation(body => 
+        postApi("quiz/change-status", body)
+    );
 
     const getQuizLink = () => {
         const link = window.location.origin + '/quiz/' + id
         navigator.clipboard.writeText(link);
+    }
+
+    const changeQuizStatus = () => {
+        if (user.role === 'QuizCreator' || user.role === "GlobalAdmin") {
+            mutate({
+                userId: user.id,
+                quizId: quiz.id,
+                status: !enabled
+            })
+        }
+
+        if (user.role == 'QuizAdmin' && enabled) {
+            mutate({
+                userId: user.id,
+                quizId: quiz.id,
+                status: !enabled
+            })
+        }
+    }
+
+    if (isLoading) {
+        return <Spinner />
+    }
+
+    if (data) {
+        location.reload()
     }
 
     return (
@@ -23,11 +55,13 @@ export const QuizStatList = ({ quiz }) => {
             {/* Conteneur principal avec styles pour la tuile */}
             <div className="flex justify-between">
                 {/* Conteneur pour le statut et la date de création */}
-                <div className=" flex items-center justify-center w-[80px] h-[33px] rounded px-[6px] py-2 bg-[#FFC9C1] text-[#6A0808]">
-                    {status}
+                <div 
+                    onClick={changeQuizStatus}
+                    className="cursor-pointer flex items-center justify-center w-[80px] h-[33px] rounded px-[6px] py-2 bg-[#FFC9C1] text-[#6A0808]">
+                    {enabled ? 'Actif' : 'Terminé'}
                 </div>
                 <p className="text-[#6A6363] flex items-center justify-center">
-                    Créé le {date}
+                    Créé le {new Intl.DateTimeFormat('en-US').format(new Date(date))}
                 </p>
             </div>
             <p>

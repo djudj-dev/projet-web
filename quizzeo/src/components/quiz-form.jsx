@@ -12,7 +12,7 @@ export const QuizForm = ({ quizz }) => {
         shouldUseNativeValidation: true
     });
 
-    const { user } = useAuth();
+    const { user } = useAuth("any");
 
     const { data, isLoading, mutate } = useMutation(body => 
         postApi("result", body)
@@ -46,7 +46,7 @@ export const QuizForm = ({ quizz }) => {
         return <Spinner />
     }
 
-    if (data || quizz.status !== "Enabled") {
+    if (data || ! quizz.enabled) {
         return <Redirection />
     } 
 

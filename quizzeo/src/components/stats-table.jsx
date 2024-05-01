@@ -42,7 +42,7 @@ export const StatsTable = ({ user }) => {
                                         email
                                     },
                                     results,
-                                    status
+                                    enabled
                                 } = quiz
 
                                 const sum = results.reduce((previous, current) => {
@@ -80,7 +80,7 @@ export const StatsTable = ({ user }) => {
                                             </div>
                                         </td>
                                         <td className="py-3 px-6 text-center">
-                                            {status}
+                                            {enabled ? 'Actif' : 'Terminé'}
                                         </td>
                                     </tr>
                                 )

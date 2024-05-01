@@ -7,7 +7,7 @@ import CreateQuizButton from "../../../components/create-quiz-button";
 import { ChangeEmailForm } from "../../../components/change-email-form";
 
 export default function Page () {
-    const { user } = useAuth();
+    const { user } = useAuth('QuizAdmin');
 
     return (
         <div className="flex flex-col mt-[23px] min-w-[800px]">

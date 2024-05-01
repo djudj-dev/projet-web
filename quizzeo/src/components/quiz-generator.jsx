@@ -5,7 +5,6 @@ import { useMutation } from "react-query";
 import { ReactQueryProvider } from "../components/react-query";
 import { postApi } from "../lib/client-fetch";
 import { useAuth } from "../lib/useAuth";
-import { localJwt } from "../lib/local-storage";
 import { Spinner } from "./spinner";
 import { Redirection } from "./auth-redirection";
 
@@ -88,7 +87,7 @@ export const QuizCreator = () => {
         postApi("quiz", body)
     );
 
-    const { user } = useAuth();
+    const { user } = useAuth("QuizMaker");
 
     const onSubmit = ({ quizTitle, questions }) => {
         questions.forEach(({ goodAnswer }, index) => questions[index].goodAnswer = Number(goodAnswer))
@@ -100,7 +99,7 @@ export const QuizCreator = () => {
         })
     }
 
-    if (isLoading) {
+    if (isLoading || !user) {
         return <Spinner />
     }
 
