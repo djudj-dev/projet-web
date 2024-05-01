@@ -17,7 +17,7 @@ const AdminSideBar = () => (
             Quiz
         </Link>
         <Link
-            href="#"
+            href="/backoffice/usersList"
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
@@ -27,7 +27,7 @@ const AdminSideBar = () => (
                 width={18}
                 height={18}
             />
-            Répondants
+            Liste des users
         </Link>
         <Link
             href="/backoffice/statistics"
@@ -56,7 +56,7 @@ const AdminSideBar = () => (
             Quiz
         </Link>
     </nav>
-)
+);
 
 export const SideBar = ({ userType }) => {
     return (
@@ -70,9 +70,7 @@ export const SideBar = ({ userType }) => {
                         width={81}
                         height={96}
                     />
-                    {
-                        userType === "Admin" && <AdminSideBar />
-                    }
+                    {userType === "Admin" && <AdminSideBar />}
                     <Link
                         href="/connexion/logout"
                         className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
