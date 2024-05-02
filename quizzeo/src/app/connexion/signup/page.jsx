@@ -8,6 +8,7 @@ import { Captcha } from "../../../components/captcha";
 import { useMutation } from "react-query";
 import { Redirection } from "../../../components/auth-redirection";
 import { localJwt } from "../../../lib/local-storage";
+import Image from "next/image";
 
 const SignupForm = () => {
     const [errorText, setErrorText] = useState("");
@@ -111,7 +112,7 @@ const SignupForm = () => {
             )}
             <button
                 type="submit"
-                className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                className="w-full font-bold bg-[#CDB46D] text-white py-2 px-4 rounded-md hover:bg-[#F3E999] focus:outline-none focus:bg-[#F3E999] hover:text-[#696262]"
             >
                 Créer un Compte
             </button>
@@ -124,11 +125,20 @@ export default function Page() {
         <ReactQueryProvider>
             <div className="bg-gray-100 min-h-screen flex items-center justify-center">
                 <div className="max-w-md w-full bg-white p-8 rounded shadow-md">
-                    <h2 className="text-2xl font-semibold mb-6">
-                        Créer un Compte
-                    </h2>
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-2xl font-semibold mb-6 text-[#696262]">
+                            CREER UN COMPTE
+                        </h2>
+                        <Image
+                            src="/QuizzeoIcon.svg"
+                            alt="Logo Quizzeo"
+                            className=""
+                            width={81}
+                            height={96}
+                        />
+                    </div>
                     <SignupForm />
-                    <p className="text-sm mt-4">
+                    <p className="text-sm mt-4 text-center">
                         Vous avez déjà un compte ?{" "}
                         <Link
                             href="/connexion/login"
