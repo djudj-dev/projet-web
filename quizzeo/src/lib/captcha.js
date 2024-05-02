@@ -1,4 +1,4 @@
-import { randomInt } from "crypto";
+"use client"
 
 export const generateCaptcha = (length) => {
     const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

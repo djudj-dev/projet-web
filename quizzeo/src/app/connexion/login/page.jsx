@@ -1,14 +1,19 @@
 "use client";
 import Link from "next/link";
+import dynamic from "next/dynamic"
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { postApi } from "../../../lib/client-fetch";
 import { ReactQueryProvider } from "../../../components/react-query";
 import { useMutation } from "react-query";
-import { Captcha } from "../../../components/captcha";
 import { Redirection } from "../../../components/auth-redirection";
 import { localJwt } from "../../../lib/local-storage";
-import Image from "next/image";
+
+const Captcha = dynamic(() => import(
+    '../../../components/captcha').then((mod) => mod.Captcha), 
+    { ssr: false }
+)
 
 const LoginForm = () => {
     const [captchaResolve, setCaptaResolve] = useState(false);
@@ -16,6 +21,8 @@ const LoginForm = () => {
     const { register, handleSubmit } = useForm({
         shouldUseNativeValidation: true,
     });
+
+    
     const { data, error, mutate } = useMutation((body) =>
         postApi("login", body)
     );
