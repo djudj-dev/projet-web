@@ -261,4 +261,16 @@ export const user = {
             throw error;
         }
     },
+
+    VerifyCreatorOrUser: async (userId) => {
+        return await prisma.result.findMany({
+            where: {
+                OR: [
+                    { userId },
+                    { quiz: { creatorId: userId } }
+                    ]
+            }
+        });
+    }
+        
 };
