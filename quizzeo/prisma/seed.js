@@ -1,15 +1,49 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
+const passwordSalt = Number(process.env.PASSWOARD_SALT);
 
 async function main() {
-    // Créer un utilisateur
-    const user = await prisma.user.create({
+    // Génère un mot de passe crypté
+    const hashedPassword = await bcrypt.hash("admin", passwordSalt);
+
+    // Créer un utilisateur avec le rôle GlobalAdmin
+    const newUser = await prisma.user.create({
         data: {
-            email: "admin@example.com",
-            password: "admin",
+            email: "admin@gmail.com",
+            password: hashedPassword,
             role: "GlobalAdmin",
             enabled: true,
         },
+    });
+
+    const manyUser = await prisma.user.createMany({
+        data: [
+            {
+                email: "quizadmin@gmail.com",
+                password: hashedPassword,
+                role: "QuizAdmin",
+                enabled: true,
+            },
+            {
+                email: "quizcreator@gmail.com",
+                password: hashedPassword,
+                role: "QuizCreator",
+                enabled: true,
+            },
+            {
+                email: "user@gmail.com",
+                password: hashedPassword,
+                role: "User",
+                enabled: false,
+            },
+            {
+                email: "useradmin@gmail.com",
+                password: hashedPassword,
+                role: "UserAdmin",
+                enabled: true,
+            },
+        ],
     });
 
     // Créer un quiz
@@ -17,7 +51,7 @@ async function main() {
         data: {
             title: "Quiz sur les capitales",
             enabled: true,
-            creatorId: user.id,
+            creatorId: newUser.id,
             questions: {
                 create: [
                     {
@@ -39,8 +73,8 @@ async function main() {
     const result = await prisma.result.create({
         data: {
             quizId: quiz.id,
-            userId: user.id,
-            score: 80,
+            userId: newUser.id,
+            score: 8,
         },
     });
 
