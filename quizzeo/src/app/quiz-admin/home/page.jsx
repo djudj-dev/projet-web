@@ -1,17 +1,17 @@
-"use client"
-import { useQuery } from "react-query"
+"use client";
+import { useQuery } from "react-query";
 import { useAuth } from "../../../lib/useAuth";
-import { QuizResultList } from "../../../components/quiz-result-list"
+import { QuizResultList } from "../../../components/quiz-result-list";
 import { ChangePasswordForm } from "../../../components/change-password-form";
 import CreateQuizButton from "../../../components/create-quiz-button";
 import { ChangeEmailForm } from "../../../components/change-email-form";
 
-export default function Page () {
-    const { user } = useAuth('QuizAdmin');
+export default function Page() {
+    const { user } = useAuth("QuizAdmin");
 
     return (
         <div className="flex flex-col mt-[23px] min-w-[800px]">
-            <div className="m-12 flex flex-col justify-left bg-[#F0F0F0] h-screen">
+            <div className="m-12 flex flex-col justify-left bg-[#F0F0F0]">
                 <section className="flex w-full justify-between">
                     <h1 className="text-4xl text-[#84602C]">Liste des quiz</h1>
                 </section>
@@ -35,7 +35,6 @@ export default function Page () {
                     <ChangeEmailForm user={user} />
                 </section>
             </div>
-            
         </div>
     );
 }

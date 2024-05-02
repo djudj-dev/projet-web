@@ -2,10 +2,11 @@
 
 ## L'Equipe
 
--   Amaury Tissot
--   Gabriel Dos Santos
--   Image Jami
--   @djudj-dev
+
+- Amaury Tissot
+- Gabriel Dos Santos
+- Image Jami
+- @djudj-dev
 
 ## Launch Projet :
 
@@ -13,183 +14,155 @@
 docker compose up -d
 cd quizzeo
 npm run dev
+
 ```
 
-## Seed database :
-
+### Seed database :
 Ne pas oublier de cd dans /quizzeo avant d'effectuer la commande ci-dessous :
 
 ```
 npm run seed
 ```
 
-# Documentation de l'ORM - Schéma Prisma
+### Variable d'environnement
 
-Voici la documentation au format .md pour le schéma Prisma :
+le projets prend actuellement 3 variables d’environnement :
 
-## Modèle User
+- `DATABASE_URL`: est utiliser par prisma pour la connexion a la DB
+- `SALT`: est utiliser pour la création/vérification des jwt
+- `PASWORD_SALT`: est utiliser pour la création/vérification des password
 
-```
-model User {
-  id String @id @default(uuid())
-  email String @unique
-  password String
-  role Role
-  enabled Boolean @default(false)
-  quiz Quiz[]
-  results Result[]
-  logs Logs[]
-  date DateTime @default(now())
-}
-```
+### Accès en local :
 
-Le modèle `User` représente un utilisateur du système. Il contient les champs suivants :
+En tapant [http://localhost:3000](http://localhost:3000) vous allez tomber sur une page de connexion, il existe un global admin déjà créer si vous avez run la seed.
+- username: admin
+- password: admin
 
--   `id` : l'identifiant unique de l'utilisateur (UUID généré automatiquement)
--   `email` : l'adresse email de l'utilisateur (doit être unique)
--   `password` : le mot de passe de l'utilisateur
--   `role` : le rôle de l'utilisateur (enum `Role`)
--   `enabled` : indique si le compte de l'utilisateur est activé ou non (par défaut `false`)
--   `quiz` : une relation one-to-many avec le modèle `Quiz` (un utilisateur peut créer plusieurs quiz)
--   `results` : une relation one-to-many avec le modèle `Result` (un utilisateur peut avoir plusieurs résultats de quiz)
--   `logs` : une relation one-to-many avec le modèle `Logs` (un utilisateur peut avoir plusieurs logs d'actions)
--   `date` : la date de création de l'utilisateur (par défaut la date actuelle)
+a partir de ce compte vous pourrez tous faire créer d'autre compte etc...
+# Documentation des choix technique
 
-## Modèle Quiz
+Pour ce projet nous avons du faire plusieurs choix technique je vais les detailler et les justifier ci dessous :
+#### Techno / Framework web :
 
-```
-model Quiz {
-  id String @id @default(uuid())
-  title String
-  enabled Boolean
-  creator User @relation(fields: [creatorId], references: [id])
-  creatorId String
-  questions Question[]
-  results Result[]
-  date DateTime @default(now())
-}
-```
+Le projet est en full javascript nous avons choisit d'utiliser NextJs pour plusieurs raison, d'abord la facilitée de déploiement, ensuite c'est un Framework 100% javascript mais en plus 100% React.
+C'est particularité on fait que nous avons pu créer assez facilement des rendu a la fois réutilisable et personnalisable grasse au composant React, de-plus il prend parfaitement en charge la création d'api, pour les requettes effectuer du cotés client, et permet de créer a la fois des composant rendu cotés client mais aussi des composant créer cotés serveur, il répondait très bien a nos attentes 
 
-Le modèle `Quiz` représente un quiz. Il contient les champs suivants :
+### Base de donnée et ORM
 
--   `id` : l'identifiant unique du quiz (UUID généré automatiquement)
--   `title` : le titre du quiz
--   `enabled` : indique si le quiz est activé ou non
--   `creator` : une relation many-to-one avec le modèle `User` (un quiz est créé par un utilisateur)
--   `creatorId` : l'identifiant de l'utilisateur qui a créé le quiz
--   `questions` : une relation one-to-many avec le modèle `Question` (un quiz contient plusieurs questions)
--   `results` : une relation one-to-many avec le modèle `Result` (un quiz peut avoir plusieurs résultats)
--   `date` : la date de création du quiz (par défaut la date actuelle)
+Pour la base de donnée nous avons choisit pgsql car elle est robuste, elle est largement utilisé dans le monde du web et de plus elle est compatible avec l'ORM que nous avons choisit d'utiliser.
 
-## Modèle Question
+Prisma est un Orm qui permet très simplment en JS de créer un shcema de base de donnée et de pouvoir utiliser un tas de méthode pour les CRUD de façon typesafe.
 
-```
-model Question {
-  id String @id @default(uuid())
-  title String
-  quiz Quiz @relation(fields: [quizId], references: [id])
-  quizId String
-  answers String[]
-  goodAnswer Int
-}
-```
+Notre choix c'est porter sur prisma pour ça simplicité d'utilisation et d’installation ainsi qu'une très bonne doc et communauté pour le support 
 
-Le modèle `Question` représente une question d'un quiz. Il contient les champs suivants :
+### Autre librairie 
 
--   `id` : l'identifiant unique de la question (UUID généré automatiquement)
--   `title` : le titre de la question
--   `quiz` : une relation many-to-one avec le modèle `Quiz` (une question appartient à un quiz)
--   `quizId` : l'identifiant du quiz auquel appartient la question
--   `answers` : un tableau de chaînes de caractères représentant les réponses possibles à la question
--   `goodAnswer` : l'index de la bonne réponse dans le tableau `answers`
+#### Tailwind
 
-## Modèle Result
+Tailwind à été choisit pour sa simplicité d'utilisation et d'intégration à React, il nous a permit de facilement styliser nos composants sans ecrire une seul ligne de css
 
-```
-model Result {
-  id String @id @default(uuid())
-  quiz Quiz @relation(fields: [quizId], references: [id])
-  quizId String
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  score Float
-  date DateTime @default(now())
-}
-```
+### React-Query
 
-Le modèle `Result` représente le résultat d'un utilisateur pour un quiz donné. Il contient les champs suivants :
+React querry a permis a nos composant client de faire simplement des requêtes vers l'api avec de la mise en cache ou une gestion simplifier des mutation de donnée, en revanche pour ce qui est de requettes nous avons choisit de rester sur l'api de base `fetch` qui fait très bien sont travail
+ 
+### jsonwebtoken & bcrypt
 
--   `id` : l'identifiant unique du résultat (UUID généré automatiquement)
--   `quiz` : une relation many-to-one avec le modèle `Quiz` (un résultat est lié à un quiz)
--   `quizId` : l'identifiant du quiz auquel le résultat est lié
--   `user` : une relation many-to-one avec le modèle `User` (un résultat est lié à un utilisateur)
--   `userId` : l'identifiant de l'utilisateur auquel le résultat est lié
--   `score` : le score obtenu par l'utilisateur pour ce quiz
--   `date` : la date du résultat (par défaut la date actuelle)
+pour ajouter un peu de securité nous avons intsaller deux librairie 
 
-## Modèle ApiKey
+`bcrypt` 
+celle ci permet de hasher les mot de passe pour que ceux ci ne soit pas stocker en clair 
 
-```
-model ApiKey {
-  id String @id @default(uuid())
-  apiKey String
-  date DateTime @default(now())
-}
-```
+`jsonwebtoken`
+les token sont utilisé pour l'authentification des utilisateurs, sur des route api protégé, on y stocke id utilisateur pour permettre une gestion des droits 
 
-Le modèle `ApiKey` représente une clé API. Il contient les champs suivants :
+### React-Hook-Form
 
--   `id` : l'identifiant unique de la clé API (UUID généré automatiquement)
--   `apiKey` : la valeur de la clé API
--   `date` : la date de création de la clé API (par défaut la date actuelle)
+React-hook-form à permis une meilleur gestion des formulaire qui sont omnipresent dans le projets il est parfaitement adapter a React et nos cas d'usages  
+ 
 
-## Modèle Logs
+# Documentation des models de données
 
-```
-model Logs {
-  id String @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  action Action
-  ip String
-  additionalInformation String?
-  date DateTime @default(now())
-}
-```
+## Schéma Prisma
+Ce schéma Prisma définit les modèles de données pour une application de quiz en ligne.
 
-Le modèle `Logs` représente un log d'action effectuée par un utilisateur. Il contient les champs suivants :
+### Modèles
 
--   `id` : l'identifiant unique du log (UUID généré automatiquement)
--   `user` : une relation many-to-one avec le modèle `User` (un log est lié à un utilisateur)
--   `userId` : l'identifiant de l'utilisateur auquel le log est lié
--   `action` : le type d'action effectuée (enum `Action`)
--   `ip` : l'adresse IP depuis laquelle l'action a été effectuée
--   `additionalInformation` : des informations supplémentaires sur l'action (optionnel)
--   `date` : la date du log (par défaut la date actuelle)
+#### `User`
 
-## Enum Action
+- `id`: Identifiant unique de l'utilisateur (généré automatiquement avec `uuid()`).
+- `email`: Adresse e-mail de l'utilisateur (unique).
+- `password`: Mot de passe de l'utilisateur.
+- `role`: Rôle de l'utilisateur (voir l'énumération `Role`).
+- `enabled`: Indique si le compte de l'utilisateur est activé.
+- `quiz`: Liste des quiz créés par l'utilisateur.
+- `results`: Liste des résultats des quiz de l'utilisateur.
+- `logs`: Liste des logs d'activité de l'utilisateur.
+- `date`: Date de création du compte de l'utilisateur.
+- `apiKeys`: Liste des clés API associées à l'utilisateur.
 
-```
-enum Action {
-  loggin
-  startQuiz
-  FinishQuiz
-  signIn
-}
-```
+#### `Quiz`
 
-L'enum `Action` définit les différents types d'actions pouvant être enregistrées dans les logs.
+- `id`: Identifiant unique du quiz (généré automatiquement avec `uuid()`).
+- `title`: Titre du quiz.
+- `enabled`: Indique si le quiz est activé.
+- `creator`: Utilisateur qui a créé le quiz.
+- `creatorId`: Identifiant de l'utilisateur qui a créé le quiz.
+- `questions`: Liste des questions du quiz.
+- `results`: Liste des résultats du quiz.
+- `date`: Date de création du quiz.
 
-## Enum Role
+#### `Question`
 
-```
-enum Role {
-  GlobalAdmin
-  AccountValidator
-  QuizAdmin
-  QuizCreator
-  User
-}
-```
+- `id`: Identifiant unique de la question (généré automatiquement avec `uuid()`).
+- `title`: Titre de la question.
+- `quiz`: Quiz auquel la question appartient.
+- `quizId`: Identifiant du quiz auquel la question appartient.
+- `answers`: Liste des réponses possibles.
+- `goodAnswer`: Index de la bonne réponse dans la liste des réponses.
 
-L'enum `Role` définit les différents rôles qu'un utilisateur peut avoir dans le système.
+#### `Result`
+
+- `id`: Identifiant unique du résultat (généré automatiquement avec `uuid()`).
+- `quiz`: Quiz auquel le résultat est lié.
+- `quizId`: Identifiant du quiz auquel le résultat est lié.
+- `user`: Utilisateur qui a obtenu ce résultat.
+- `userId`: Identifiant de l'utilisateur qui a obtenu ce résultat.
+- `score`: Score obtenu par l'utilisateur.
+- `date`: Date d'obtention du résultat.
+
+`Result` a aussi un contrainte unique sur la paire `[userId, quizId]` ainsi un user ne peut pas répondre deux fois au même quiz
+
+#### `ApiKey`
+
+- `id`: Identifiant unique de la clé API (généré automatiquement avec `uuid()`).
+- `apiKey`: Clé API.
+- `date`: Date de création de la clé API.
+- `user`: Utilisateur associé à la clé API.
+- `userId`: Identifiant de l'utilisateur associé à la clé API.
+
+#### `Logs`
+
+- `id`: Identifiant unique du log (généré automatiquement avec `uuid()`).
+- `user`: Utilisateur associé au log.
+- `userId`: Identifiant de l'utilisateur associé au log.
+- `action`: Action effectuée par l'utilisateur (voir l'énumération `Action`).
+- `ip`: Adresse IP de l'utilisateur.
+- `additionalInformation`: Informations supplémentaires sur l'action.
+- `date`: Date de l'action.
+
+### Énumérations
+
+#### `Role`
+
+- `GlobalAdmin`: Administrateur global.
+- `QuizAdmin`: Administrateur de quiz.
+- `QuizCreator`: Créateur de quiz.
+- `User`: Utilisateur standard.
+- `UserAdmin`: Administrateur d'utilisateurs.
+
+#### `Action`
+
+- `loggin`: Connexion.
+- `startQuiz`: Démarrage d'un quiz.
+- `FinishQuiz`: Fin d'un quiz.
+- `signIn`: Inscription.

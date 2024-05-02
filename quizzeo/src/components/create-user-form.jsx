@@ -1,17 +1,16 @@
-'use client' 
+"use client";
 import { useMutation } from "react-query";
 import { useForm } from "react-hook-form";
 import { postApi } from "../lib/client-fetch";
 import { Spinner } from "./spinner";
 
 export const CreateUserForm = ({ user }) => {
-
-    const { data, error, mutate, isLoading } = useMutation (
-        (body) => postApi("/user/admin-create", body),
+    const { data, error, mutate, isLoading } = useMutation((body) =>
+        postApi("/user/admin-create", body)
     );
 
-    const { register, handleSubmit, } = useForm({
-        shouldUseNativeValidation: true
+    const { register, handleSubmit } = useForm({
+        shouldUseNativeValidation: true,
     });
 
     const onSubmit = ({ email, password, role, enabled }) => {
@@ -20,18 +19,29 @@ export const CreateUserForm = ({ user }) => {
             password,
             role,
             email,
-            enabled
-        })
-    }
+            enabled,
+        });
+    };
 
     if (isLoading) {
-        return <Spinner />
+        return <Spinner />;
     }
 
     return (
-        <form className="m-auto" onSubmit={handleSubmit(onSubmit)}>
-            { error && <p className="m-auto text-center p-1 px-3 bg-red-400 w-fit my-2 rounded">la création d'utilisateur a echouer</p> }
-            { data && <p className="m-auto text-center p-1 px-3 bg-green-400 w-fit my-2 rounded">la création d'utilisateur a reussi</p> }
+        <form
+            className="m-auto bg-white rounded shadow-tile px-12 py-8"
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            {error && (
+                <p className="m-auto text-center p-1 px-3 bg-red-400 w-fit my-2 rounded">
+                    la création d'utilisateur a echouer
+                </p>
+            )}
+            {data && (
+                <p className="m-auto text-center p-1 px-3 bg-green-400 w-fit my-2 rounded">
+                    la création d'utilisateur a reussi
+                </p>
+            )}
             <div className="mb-6">
                 <label
                     htmlFor="email"
@@ -40,7 +50,7 @@ export const CreateUserForm = ({ user }) => {
                     Email
                 </label>
                 <input
-                    {...register('email')}
+                    {...register("email")}
                     type="email"
                     id="email"
                     name="email"
@@ -57,7 +67,7 @@ export const CreateUserForm = ({ user }) => {
                     Mot de passe
                 </label>
                 <input
-                    {...register('password')}
+                    {...register("password")}
                     type="password"
                     id="password"
                     name="password"
@@ -75,17 +85,17 @@ export const CreateUserForm = ({ user }) => {
                         Role
                     </label>
                     <select
-                        {...register('role')}
+                        {...register("role")}
                         type="password"
                         id="newPassword"
                         name="newPassword"
                         className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                         placeholder="Entrez votre nouveau mot de passe"
                     >
-                        <option value="User" >User</option>
-                        <option value="QuizCreator" >QuizCreator</option>
-                        <option value="QuizAdmin" >QuizAdmin</option>
-                        <option value="UserAdmin" >UserAdmin</option>
+                        <option value="User">User</option>
+                        <option value="QuizCreator">QuizCreator</option>
+                        <option value="QuizAdmin">QuizAdmin</option>
+                        <option value="UserAdmin">UserAdmin</option>
                     </select>
                 </div>
                 <div>
@@ -96,21 +106,23 @@ export const CreateUserForm = ({ user }) => {
                         Actif
                     </label>
                     <input
-                        {...register('enabled')}
+                        {...register("enabled")}
                         type="checkbox"
                         id="enabled"
                         name="enabled"
-                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                        className="w-[25px] h-[25px] px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 hover:border-blue-500 mt-1"
                         placeholder="Entrez votre nouveau mot de passe"
                     />
                 </div>
             </div>
-            <button
-                type="submit"
-                className="w-full bg-[#84602C] text-white py-2 px-4 rounded-md hover:bg-[#84602C] focus:outline-none focus:bg-blue-600"
-            >
-                Créer l'utilisateur
-            </button>
+            <div className="flex justify-center">
+                <button
+                    type="submit"
+                    className="w-[30%] bg-[#CDB46D] text-white py-2 px-4 rounded-md hover:bg-[#F3E999] focus:outline-none focus:bg-[#F3E999] hover:text-[#6A6363] font-bold"
+                >
+                    Créer l'utilisateur
+                </button>
+            </div>
         </form>
-    )
-}
+    );
+};

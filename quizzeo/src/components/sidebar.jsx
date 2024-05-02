@@ -34,11 +34,11 @@ const GlobalAdminNav = () => (
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
-                src="/assignementIcon.svg"
+                src="/plus-circle.svg"
                 alt=""
                 className=""
-                width={18}
-                height={18}
+                width={22}
+                height={22}
             />
             Créer un user
         </Link>
@@ -66,14 +66,14 @@ const GlobalAdminNav = () => (
                 width={18}
                 height={18}
             />
-            Quiz
+            Liste des quiz
         </Link>
         <Link
             href="/connexion/logout"
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
-                src="/assignementIcon.svg"
+                src="/closeIcon.svg"
                 alt=""
                 className=""
                 width={18}
@@ -104,13 +104,13 @@ const QuizAdminNav = () => (
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
-                src="/dashboardIcon.svg"
+                src="/splitscreenIcon.svg"
                 alt=""
                 className=""
                 width={18}
                 height={18}
             />
-            Quiz
+            List des quiz
         </Link>
         <Link
             href="/quiz-admin/statistics"
@@ -130,7 +130,7 @@ const QuizAdminNav = () => (
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
-                src="/assignementIcon.svg"
+                src="/closeIcon.svg"
                 alt=""
                 className=""
                 width={18}
@@ -139,7 +139,7 @@ const QuizAdminNav = () => (
             Déconnexion
         </Link>
     </nav>
-)
+);
 
 const QuizCreatorNav = () => (
     <nav className="flex flex-col w-[147px] gap-4">
@@ -161,13 +161,13 @@ const QuizCreatorNav = () => (
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
-                src="/dashboardIcon.svg"
+                src="/splitscreenIcon.svg"
                 alt=""
                 className=""
                 width={18}
                 height={18}
             />
-            Quiz
+            List des quiz
         </Link>
         <Link
             href="/quiz-creator/statistics"
@@ -187,7 +187,7 @@ const QuizCreatorNav = () => (
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
-                src="/assignementIcon.svg"
+                src="/closeIcon.svg"
                 alt=""
                 className=""
                 width={18}
@@ -196,8 +196,7 @@ const QuizCreatorNav = () => (
             Déconnexion
         </Link>
     </nav>
-)
-
+);
 
 const UserAdminNav = () => (
     <nav className="flex flex-col w-[147px] gap-4">
@@ -232,7 +231,7 @@ const UserAdminNav = () => (
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
-                src="/assignementIcon.svg"
+                src="/closeIcon.svg"
                 alt=""
                 className=""
                 width={18}
@@ -241,7 +240,7 @@ const UserAdminNav = () => (
             Déconnexion
         </Link>
     </nav>
-)
+);
 
 const UserNav = () => (
     <nav className="flex flex-col w-[147px] gap-4">
@@ -250,7 +249,7 @@ const UserNav = () => (
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
-                src="/assignementIcon.svg"
+                src="/closeIcon.svg"
                 alt=""
                 className=""
                 width={18}
@@ -263,7 +262,7 @@ const UserNav = () => (
 
 export const SideBar = ({ userType }) => (
     <>
-        <aside className="w-1/6 min-w-36 max-w-48  h-screen text-[#84602C] flex flex-col justify-between items-center shadow-custom bg-white">
+        <aside className="w-1/6 min-w-36 max-w-48 text-[#84602C] flex flex-col justify-between items-center shadow-custom bg-white sticky top-0 left-0 h-screen">
             <div className="flex flex-col justify-center items-center gap-10">
                 <Image
                     src="/QuizzeoIcon.svg"
@@ -272,21 +271,11 @@ export const SideBar = ({ userType }) => (
                     width={81}
                     height={96}
                 />
-                {
-                    userType === "GlobalAdmin" && <GlobalAdminNav />
-                }
-                {
-                    userType === "QuizAdmin" && <QuizAdminNav />
-                }
-                {
-                    userType === "UserAdmin" && <UserAdminNav />
-                }
-                {
-                    userType === "QuizCreator" && <QuizCreatorNav />
-                }
-                {
-                    userType === "User" && <UserNav />
-                }
+                {userType === "GlobalAdmin" && <GlobalAdminNav />}
+                {userType === "QuizAdmin" && <QuizAdminNav />}
+                {userType === "UserAdmin" && <UserAdminNav />}
+                {userType === "QuizCreator" && <QuizCreatorNav />}
+                {userType === "User" && <UserNav />}
             </div>
         </aside>
     </>

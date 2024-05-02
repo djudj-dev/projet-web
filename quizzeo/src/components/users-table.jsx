@@ -1,22 +1,24 @@
 import React from "react";
-import { useQuery, useMutation } from "react-query"
+import { useQuery, useMutation } from "react-query";
 import { postApi } from "../lib/client-fetch";
-import { Spinner } from "./spinner"
+import { Spinner } from "./spinner";
 import dateFormat from "../lib/dateFormat";
 
-const RoleSelect = ({ user, actualUser}) => {
-
-    const { error, mutate } = useMutation(body => 
+const RoleSelect = ({ user, actualUser }) => {
+    const { error, mutate } = useMutation((body) =>
         postApi("user/change-role", body)
     );
+
+    const commonCss =
+        "w-[60%] h-[30px] border border-[#CFCFCF] rounded hover:border-gray-500 focus:outline-none focus:shadow-outline";
 
     const changeRole = (role, userId, user) => {
         mutate({
             userId,
             newRole: role,
-            userToChange: user
-        })
-    }
+            userToChange: user,
+        });
+    };
 
     if (error) {
         location.reload();
@@ -24,55 +26,55 @@ const RoleSelect = ({ user, actualUser}) => {
 
     if (actualUser.role === "UserAdmin") {
         return (
-            <select 
+            <select
+                className={commonCss}
                 defaultValue={user.role}
-                onChange={(event) => changeRole(
-                    event.target.value,
-                    actualUser.id,
-                    user
-                )}
+                onChange={(event) =>
+                    changeRole(event.target.value, actualUser.id, user)
+                }
             >
-                <option value="User" >User</option>
-                <option value="QuizCreator" >QuizCreator</option>
-                <option value="QuizAdmin" >QuizAdmin</option>
+                <option value="User">User</option>
+                <option value="QuizCreator">QuizCreator</option>
+                <option value="QuizAdmin">QuizAdmin</option>
             </select>
-        )
+        );
     }
 
     if (actualUser.role === "GlobalAdmin") {
         return (
-            <select defaultValue={user.role}>
-                <option value="User" >User</option>
-                <option value="QuizCreator" >QuizCreator</option>
-                <option value="QuizAdmin" >QuizAdmin</option>
-                <option value="UserAdmin" >UserAdmin</option>
+            <select defaultValue={user.role} className={commonCss}>
+                <option value="User">User</option>
+                <option value="QuizCreator">QuizCreator</option>
+                <option value="QuizAdmin">QuizAdmin</option>
+                <option value="UserAdmin">UserAdmin</option>
             </select>
-        )
+        );
     }
-}
+};
 
 export const UsersTable = ({ user }) => {
-
-    const { data } = useQuery ({
+    const { data } = useQuery({
         queryKey: "quiz-admin-list",
-        queryFn: () => postApi("user/get-all", { userId : user.id }),
-        enabled: user !== undefined
-    })
+        queryFn: () => postApi("user/get-all", { userId: user.id }),
+        enabled: user !== undefined,
+    });
 
-    const { data: mutationData, error, mutate } = useMutation(body => 
-        postApi("user/change-status", body)
-    );
+    const {
+        data: mutationData,
+        error,
+        mutate,
+    } = useMutation((body) => postApi("user/change-status", body));
 
     const changeUserStatus = (userToChange) => {
         mutate({
             userId: user.id,
             newStatus: !userToChange.enabled,
-            userToChange
-        })
-    }
+            userToChange,
+        });
+    };
 
     if (mutationData) {
-        location.reload()
+        location.reload();
     }
 
     if (data) {
@@ -100,53 +102,57 @@ export const UsersTable = ({ user }) => {
                     </thead>
                     <tbody className="text-gray-600 text-xs bg-white">
                         {/* // Boucle sur les données des quiz pour générer les lignes du tableau */}
-                        {
-                            Object.values(data).map((currentUser, index) => {
-                                return (
-                                    <tr
-                                        key={index}
-                                        className="border-b border-gray-200 hover:bg-gray-100"
-                                    >
-                                        <td className="py-3 px-6 text-center whitespace-nowrap">
-                                            {index + 1}
-                                        </td>
-                                        <td className="py-3 px-6 text-center">
-                                            {currentUser.email}
-                                        </td>
-                                        <td className="py-3 px-6 text-center">{
-                                            <RoleSelect actualUser={user} user={currentUser}/>}
-                                        </td>
-                                        <td className="py-3 px-6 text-center">
-                                            {/* //TODO: mettre en place une fonctionnalité
-                                            permettant d'activer / désactiver le status de
-                                            l'utilisateur lors d'un clic sur le bouton
-                                            ci-dessous */}
-                                            <div
-                                                onClick={() => changeUserStatus(currentUser)}
-                                                className="rounded-[27px] py-2 px-[30px] cursor-pointer"
-                                                style={{
-                                                    backgroundColor: !currentUser.enabled
+                        {Object.values(data).map((currentUser, index) => {
+                            return (
+                                <tr
+                                    key={index}
+                                    className="border-b border-gray-200 hover:bg-gray-100"
+                                >
+                                    <td className="py-3 px-6 text-center whitespace-nowrap">
+                                        {index + 1}
+                                    </td>
+                                    <td className="py-3 px-6 text-center">
+                                        {currentUser.email}
+                                    </td>
+                                    <td className="py-3 px-6 text-center">
+                                        {
+                                            <RoleSelect
+                                                actualUser={user}
+                                                user={currentUser}
+                                            />
+                                        }
+                                    </td>
+                                    <td className="py-3 px-6 text-center">
+                                        <div
+                                            onClick={() =>
+                                                changeUserStatus(currentUser)
+                                            }
+                                            className="rounded-[27px] py-2 cursor-pointer"
+                                            style={{
+                                                backgroundColor:
+                                                    !currentUser.enabled
                                                         ? "#FFC9C1" // si l'utilisateur est désactivé
                                                         : "#DCEED3", // sinon fond vert
-                                                }}
-                                            >
-                                                {currentUser.enabled ? "Activé" : "Désactivé"}
-                                            </div>
-                                        </td>
-                                        <td className="py-3 px-6 text-center">
-                                            {dateFormat(currentUser.date)}
-                                        </td>
-                                    </tr>
-                                )
-                            })
-                        }
+                                            }}
+                                        >
+                                            {currentUser.enabled
+                                                ? "Activé"
+                                                : "Désactivé"}
+                                        </div>
+                                    </td>
+                                    <td className="py-3 px-6 text-center">
+                                        {dateFormat(currentUser.date)}
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
         );
     }
 
-    return <Spinner />
+    return <Spinner />;
 };
 
 export default UsersTable;

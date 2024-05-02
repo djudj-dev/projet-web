@@ -6,6 +6,7 @@ const passwordSalt = Number(process.env.PASSWOARD_SALT);
 export const user = {
     login: async ({ email, password }) => {
         try {
+            console.log(email, password)
             const user = await prisma.user.findUnique({
                 where: {
                     email: email,
@@ -14,6 +15,7 @@ export const user = {
             });
 
             if (!user) {
+                console.log(user)
                 throw new Error("Identifiant incorrect ou compte non activé");
             }
 

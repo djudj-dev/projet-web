@@ -1,41 +1,51 @@
-'use client' 
+"use client";
 import { useMutation } from "react-query";
 import { useForm } from "react-hook-form";
-import { Spinner } from "./spinner"
+import { Spinner } from "./spinner";
 
 import { postApi } from "../lib/client-fetch";
 
 export const ChangeEmailForm = ({ user }) => {
-
-    const { data, error, mutate, isLoading } = useMutation (
-        (body) => postApi("/user/change-email", body)
+    const { data, error, mutate, isLoading } = useMutation((body) =>
+        postApi("/user/change-email", body)
     );
 
-    const { register, handleSubmit, } = useForm({
-        shouldUseNativeValidation: true
+    const { register, handleSubmit } = useForm({
+        shouldUseNativeValidation: true,
     });
 
     const onSubmit = ({ newEmail }) => {
         mutate({
             newEmail,
-            userId: user.id
-        })
-    }
+            userId: user.id,
+        });
+    };
 
     if (isLoading) {
-        return <Spinner />
+        return <Spinner />;
     }
 
     return (
-        <form className="m-auto" onSubmit={handleSubmit(onSubmit)}>
-            { error && <p className="m-auto text-center p-1 px-3 bg-red-400 w-fit my-2 rounded">le changement d'email a echouer</p> }
-            { data && <p className="m-auto text-center p-1 px-3 bg-green-400 w-fit my-2 rounded">le changement d'email a reussi</p> }
+        <form
+            className="m-auto bg-white rounded shadow-tile px-12 py-8"
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            {error && (
+                <p className="m-auto text-center p-1 px-3 bg-red-400 w-fit my-2 rounded">
+                    le changement d'email a echouer
+                </p>
+            )}
+            {data && (
+                <p className="m-auto text-center p-1 px-3 bg-green-400 w-fit my-2 rounded">
+                    le changement d'email a reussi
+                </p>
+            )}
             <div className="mb-6">
                 <label
                     htmlFor="email"
                     className="block text-gray-700 text-sm font-bold mb-2"
                 >
-                   Votre email actuel
+                    Votre email actuel
                 </label>
                 <input
                     type="email"
@@ -54,7 +64,7 @@ export const ChangeEmailForm = ({ user }) => {
                     Nouvel email
                 </label>
                 <input
-                    {...register('newEmail')}
+                    {...register("newEmail")}
                     type="email"
                     id="newEmail"
                     name="newEmail"
@@ -62,12 +72,14 @@ export const ChangeEmailForm = ({ user }) => {
                     placeholder="Entrez votre nouveau mot de passe"
                 />
             </div>
-            <button
-                type="submit"
-                className="w-full bg-[#84602C] text-white py-2 px-4 rounded-md hover:bg-[#84602C] focus:outline-none focus:bg-blue-600"
-            >
-                Changer de mot de passe
-            </button>
+            <div className="flex justify-center">
+                <button
+                    type="submit"
+                    className="w-[30%] bg-[#CDB46D] text-white py-2 px-4 rounded-md hover:bg-[#F3E999] focus:outline-none focus:bg-[#F3E999] hover:text-[#6A6363] font-bold"
+                >
+                    Changer votre email
+                </button>
+            </div>
         </form>
-    )
-}
+    );
+};
