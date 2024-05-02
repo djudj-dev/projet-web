@@ -25,171 +25,93 @@ npm run seed
 
 # Documentation de l'ORM - Schéma Prisma
 
-Voici la documentation au format .md pour le schéma Prisma :
+Voici la documentation au format .md pour le schéma Prisma fourni :
 
-## Modèle User
+## Schéma Prisma
 
-```
-model User {
-  id String @id @default(uuid())
-  email String @unique
-  password String
-  role Role
-  enabled Boolean @default(false)
-  quiz Quiz[]
-  results Result[]
-  logs Logs[]
-  date DateTime @default(now())
-}
-```
+Ce schéma Prisma définit les modèles de données pour une application de quiz en ligne.
 
-Le modèle `User` représente un utilisateur du système. Il contient les champs suivants :
+### Modèles
 
--   `id` : l'identifiant unique de l'utilisateur (UUID généré automatiquement)
--   `email` : l'adresse email de l'utilisateur (doit être unique)
--   `password` : le mot de passe de l'utilisateur
--   `role` : le rôle de l'utilisateur (enum `Role`)
--   `enabled` : indique si le compte de l'utilisateur est activé ou non (par défaut `false`)
--   `quiz` : une relation one-to-many avec le modèle `Quiz` (un utilisateur peut créer plusieurs quiz)
--   `results` : une relation one-to-many avec le modèle `Result` (un utilisateur peut avoir plusieurs résultats de quiz)
--   `logs` : une relation one-to-many avec le modèle `Logs` (un utilisateur peut avoir plusieurs logs d'actions)
--   `date` : la date de création de l'utilisateur (par défaut la date actuelle)
+#### `User`
 
-## Modèle Quiz
+-   `id`: Identifiant unique de l'utilisateur (généré automatiquement avec `uuid()`).
+-   `email`: Adresse e-mail de l'utilisateur (unique).
+-   `password`: Mot de passe de l'utilisateur.
+-   `role`: Rôle de l'utilisateur (voir l'énumération `Role`).
+-   `enabled`: Indique si le compte de l'utilisateur est activé.
+-   `quiz`: Liste des quiz créés par l'utilisateur.
+-   `results`: Liste des résultats des quiz de l'utilisateur.
+-   `logs`: Liste des logs d'activité de l'utilisateur.
+-   `date`: Date de création du compte de l'utilisateur.
+-   `apiKeys`: Liste des clés API associées à l'utilisateur.
 
-```
-model Quiz {
-  id String @id @default(uuid())
-  title String
-  enabled Boolean
-  creator User @relation(fields: [creatorId], references: [id])
-  creatorId String
-  questions Question[]
-  results Result[]
-  date DateTime @default(now())
-}
-```
+#### `Quiz`
 
-Le modèle `Quiz` représente un quiz. Il contient les champs suivants :
+-   `id`: Identifiant unique du quiz (généré automatiquement avec `uuid()`).
+-   `title`: Titre du quiz.
+-   `enabled`: Indique si le quiz est activé.
+-   `creator`: Utilisateur qui a créé le quiz.
+-   `creatorId`: Identifiant de l'utilisateur qui a créé le quiz.
+-   `questions`: Liste des questions du quiz.
+-   `results`: Liste des résultats du quiz.
+-   `date`: Date de création du quiz.
 
--   `id` : l'identifiant unique du quiz (UUID généré automatiquement)
--   `title` : le titre du quiz
--   `enabled` : indique si le quiz est activé ou non
--   `creator` : une relation many-to-one avec le modèle `User` (un quiz est créé par un utilisateur)
--   `creatorId` : l'identifiant de l'utilisateur qui a créé le quiz
--   `questions` : une relation one-to-many avec le modèle `Question` (un quiz contient plusieurs questions)
--   `results` : une relation one-to-many avec le modèle `Result` (un quiz peut avoir plusieurs résultats)
--   `date` : la date de création du quiz (par défaut la date actuelle)
+#### `Question`
 
-## Modèle Question
+-   `id`: Identifiant unique de la question (généré automatiquement avec `uuid()`).
+-   `title`: Titre de la question.
+-   `quiz`: Quiz auquel la question appartient.
+-   `quizId`: Identifiant du quiz auquel la question appartient.
+-   `answers`: Liste des réponses possibles.
+-   `goodAnswer`: Index de la bonne réponse dans la liste des réponses.
 
-```
-model Question {
-  id String @id @default(uuid())
-  title String
-  quiz Quiz @relation(fields: [quizId], references: [id])
-  quizId String
-  answers String[]
-  goodAnswer Int
-}
-```
+#### `Result`
 
-Le modèle `Question` représente une question d'un quiz. Il contient les champs suivants :
+-   `id`: Identifiant unique du résultat (généré automatiquement avec `uuid()`).
+-   `quiz`: Quiz auquel le résultat est lié.
+-   `quizId`: Identifiant du quiz auquel le résultat est lié.
+-   `user`: Utilisateur qui a obtenu ce résultat.
+-   `userId`: Identifiant de l'utilisateur qui a obtenu ce résultat.
+-   `score`: Score obtenu par l'utilisateur.
+-   `date`: Date d'obtention du résultat.
 
--   `id` : l'identifiant unique de la question (UUID généré automatiquement)
--   `title` : le titre de la question
--   `quiz` : une relation many-to-one avec le modèle `Quiz` (une question appartient à un quiz)
--   `quizId` : l'identifiant du quiz auquel appartient la question
--   `answers` : un tableau de chaînes de caractères représentant les réponses possibles à la question
--   `goodAnswer` : l'index de la bonne réponse dans le tableau `answers`
+#### `ApiKey`
 
-## Modèle Result
+-   `id`: Identifiant unique de la clé API (généré automatiquement avec `uuid()`).
+-   `apiKey`: Clé API.
+-   `date`: Date de création de la clé API.
+-   `user`: Utilisateur associé à la clé API.
+-   `userId`: Identifiant de l'utilisateur associé à la clé API.
 
-```
-model Result {
-  id String @id @default(uuid())
-  quiz Quiz @relation(fields: [quizId], references: [id])
-  quizId String
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  score Float
-  date DateTime @default(now())
-}
-```
+#### `Logs`
 
-Le modèle `Result` représente le résultat d'un utilisateur pour un quiz donné. Il contient les champs suivants :
+-   `id`: Identifiant unique du log (généré automatiquement avec `uuid()`).
+-   `user`: Utilisateur associé au log.
+-   `userId`: Identifiant de l'utilisateur associé au log.
+-   `action`: Action effectuée par l'utilisateur (voir l'énumération `Action`).
+-   `ip`: Adresse IP de l'utilisateur.
+-   `additionalInformation`: Informations supplémentaires sur l'action.
+-   `date`: Date de l'action.
 
--   `id` : l'identifiant unique du résultat (UUID généré automatiquement)
--   `quiz` : une relation many-to-one avec le modèle `Quiz` (un résultat est lié à un quiz)
--   `quizId` : l'identifiant du quiz auquel le résultat est lié
--   `user` : une relation many-to-one avec le modèle `User` (un résultat est lié à un utilisateur)
--   `userId` : l'identifiant de l'utilisateur auquel le résultat est lié
--   `score` : le score obtenu par l'utilisateur pour ce quiz
--   `date` : la date du résultat (par défaut la date actuelle)
+### Énumérations
 
-## Modèle ApiKey
+#### `Role`
 
-```
-model ApiKey {
-  id String @id @default(uuid())
-  apiKey String
-  date DateTime @default(now())
-}
-```
+-   `GlobalAdmin`: Administrateur global.
+-   `QuizAdmin`: Administrateur de quiz.
+-   `QuizCreator`: Créateur de quiz.
+-   `User`: Utilisateur standard.
+-   `UserAdmin`: Administrateur d'utilisateurs.
 
-Le modèle `ApiKey` représente une clé API. Il contient les champs suivants :
+#### `Action`
 
--   `id` : l'identifiant unique de la clé API (UUID généré automatiquement)
--   `apiKey` : la valeur de la clé API
--   `date` : la date de création de la clé API (par défaut la date actuelle)
+-   `loggin`: Connexion.
+-   `startQuiz`: Démarrage d'un quiz.
+-   `FinishQuiz`: Fin d'un quiz.
+-   `signIn`: Inscription.
 
-## Modèle Logs
+### Configuration
 
-```
-model Logs {
-  id String @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  userId String
-  action Action
-  ip String
-  additionalInformation String?
-  date DateTime @default(now())
-}
-```
-
-Le modèle `Logs` représente un log d'action effectuée par un utilisateur. Il contient les champs suivants :
-
--   `id` : l'identifiant unique du log (UUID généré automatiquement)
--   `user` : une relation many-to-one avec le modèle `User` (un log est lié à un utilisateur)
--   `userId` : l'identifiant de l'utilisateur auquel le log est lié
--   `action` : le type d'action effectuée (enum `Action`)
--   `ip` : l'adresse IP depuis laquelle l'action a été effectuée
--   `additionalInformation` : des informations supplémentaires sur l'action (optionnel)
--   `date` : la date du log (par défaut la date actuelle)
-
-## Enum Action
-
-```
-enum Action {
-  loggin
-  startQuiz
-  FinishQuiz
-  signIn
-}
-```
-
-L'enum `Action` définit les différents types d'actions pouvant être enregistrées dans les logs.
-
-## Enum Role
-
-```
-enum Role {
-  GlobalAdmin
-  AccountValidator
-  QuizAdmin
-  QuizCreator
-  User
-}
-```
-
-L'enum `Role` définit les différents rôles qu'un utilisateur peut avoir dans le système.
+-   `generator client`: Utilise le fournisseur `prisma-client-js` pour générer le client Prisma.
+-   `datasource db`: Utilise le fournisseur `postgresql` pour la base de données, avec l'URL définie par la variable d'environnement `DATABASE_URL`.
