@@ -104,13 +104,13 @@ const QuizAdminNav = () => (
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
-                src="/dashboardIcon.svg"
+                src="/splitscreenIcon.svg"
                 alt=""
                 className=""
                 width={18}
                 height={18}
             />
-            Quiz
+            List des quiz
         </Link>
         <Link
             href="/quiz-admin/statistics"
@@ -130,7 +130,7 @@ const QuizAdminNav = () => (
             className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
         >
             <Image
-                src="/assignementIcon.svg"
+                src="/closeIcon.svg"
                 alt=""
                 className=""
                 width={18}
