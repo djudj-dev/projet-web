@@ -8,6 +8,7 @@ import { useMutation } from "react-query";
 import { Captcha } from "../../../components/captcha";
 import { Redirection } from "../../../components/auth-redirection";
 import { localJwt } from "../../../lib/local-storage";
+import Image from "next/image";
 
 const LoginForm = () => {
     const [captchaResolve, setCaptaResolve] = useState(false);
@@ -79,7 +80,7 @@ const LoginForm = () => {
             )}
             <button
                 type="submit"
-                className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                className="w-full font-bold bg-[#CDB46D] text-white py-2 px-4 rounded-md hover:bg-[#F3E999] focus:outline-none focus:bg-[#F3E999] hover:text-[#696262]"
             >
                 Se Connecter
             </button>
@@ -92,9 +93,20 @@ export default function Page() {
         <ReactQueryProvider>
             <div className="bg-gray-100 min-h-screen flex items-center justify-center">
                 <div className="max-w-md w-full bg-white p-8 rounded shadow-md">
-                    <h2 className="text-2xl font-semibold mb-6">CONNEXION</h2>
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-2xl text-[#696262] font-semibold mb-6">
+                            CONNEXION
+                        </h2>
+                        <Image
+                            src="/QuizzeoIcon.svg"
+                            alt="Logo Quizzeo"
+                            className=""
+                            width={81}
+                            height={96}
+                        />
+                    </div>
                     <LoginForm />
-                    <p className="text-sm mt-4">
+                    <p className="text-sm mt-4 text-center">
                         Vous n'avez pas de compte ?{" "}
                         <Link
                             href="/connexion/signup"
