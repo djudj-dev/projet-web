@@ -59,7 +59,7 @@ model Result {
 
 model ApiKey {
   id String @id @default(uuid())
-  apiKey String
+  apiKey String @unique()
   date DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
   userId String
