@@ -1,19 +1,36 @@
 import { NextResponse } from "next/server";
 import { result } from "../../../../lib/result";
 import { headers } from "next/headers";
+import { verifyidApi } from "../../../../../lib/api";
+
 
 export async function GET (request, { params }) {
-    const apiKey = headers().get('authorization');
-    const { quizId } = params
+    try {
+        const apiKey = headers().get('authorization');
+        const { quizId } = params
+        console.log(apiKey);
+        verifyidApi(apiKey)
+        console.log(verifyidApi)
+        
 
-    // ajouter une fonction qui verifie que : 
+
+        const finalData = await result.listByUser(userId);
+        return NextResponse.json({ ...finalData });
+
+
+
+    } catch (error) {
+        
+    }
+    
+
+    
     // l'api key est associer a un utilisateur,
     // l'utilisateur en question a repondu a ce quiz 
-    // si ou retoruner le resultat du quiz 
-    // sinon une 401 Unautorized 
 
-    const finalData = await result.listByUser(userId);
+      // sinon une 401 Unautorized 
 
-    return NextResponse.json({ ...finalData });
+
 }
+
 
