@@ -14,7 +14,7 @@ export const QuizForm = ({ quizz }) => {
 
     const { user } = useAuth("any");
 
-    const { data, isLoading, mutate } = useMutation(body => 
+    const { data, isLoading, error, mutate } = useMutation(body => 
         postApi("result", body)
     );
 
@@ -44,7 +44,13 @@ export const QuizForm = ({ quizz }) => {
         return <Spinner />
     }
 
-    if (data || ! quizz.enabled) {
+    if (data || !quizz.enabled) {
+        return <Redirection />
+    } 
+
+    if (error) {
+        console.error('Erreur a l\'enregistrement du resultat')
+
         return <Redirection />
     } 
 

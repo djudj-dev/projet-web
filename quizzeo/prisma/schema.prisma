@@ -23,6 +23,7 @@ model User {
   results Result[]
   logs Logs[]
   date DateTime @default(now())
+  apiKeys ApiKey[]
 }
 
 model Quiz {
@@ -53,12 +54,15 @@ model Result {
   userId String
   score Float
   date DateTime @default(now())
+  @@unique([userId, quizId])
 }
 
 model ApiKey {
   id String @id @default(uuid())
   apiKey String
   date DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  userId String
 }
 
 model Logs {
