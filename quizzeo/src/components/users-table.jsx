@@ -1,20 +1,19 @@
 import React from "react";
 import { useQuery, useMutation } from "react-query";
-import { postApi } from "../lib/client-fetch";
+import { getAuthApi, postAuthApi } from "../lib/client-fetch";
 import { Spinner } from "./spinner";
 import dateFormat from "../lib/dateFormat";
 
-const RoleSelect = ({ user, actualUser }) => {
+const RoleSelect = ({ user, actualUser, jwt }) => {
     const { error, mutate } = useMutation((body) =>
-        postApi("user/change-role", body)
+        postAuthApi("auth/user/change-role", body, jwt)
     );
 
     const commonCss =
         "w-[60%] h-[30px] border border-[#CFCFCF] rounded hover:border-gray-500 focus:outline-none focus:shadow-outline";
 
-    const changeRole = (role, userId, user) => {
+    const changeRole = (role, user) => {
         mutate({
-            userId,
             newRole: role,
             userToChange: user,
         });
@@ -30,7 +29,7 @@ const RoleSelect = ({ user, actualUser }) => {
                 className={commonCss}
                 defaultValue={user.role}
                 onChange={(event) =>
-                    changeRole(event.target.value, actualUser.id, user)
+                    changeRole(event.target.value, user)
                 }
             >
                 <option value="User">User</option>
@@ -52,10 +51,10 @@ const RoleSelect = ({ user, actualUser }) => {
     }
 };
 
-export const UsersTable = ({ user }) => {
+export const UsersTable = ({ user, jwt }) => {
     const { data } = useQuery({
         queryKey: "quiz-admin-list",
-        queryFn: () => postApi("user/get-all", { userId: user.id }),
+        queryFn: () => getAuthApi("auth/user/get-all", jwt),
         enabled: user !== undefined,
     });
 
@@ -63,11 +62,10 @@ export const UsersTable = ({ user }) => {
         data: mutationData,
         error,
         mutate,
-    } = useMutation((body) => postApi("user/change-status", body));
+    } = useMutation((body) => postAuthApi("auth/user/change-status", body, jwt));
 
     const changeUserStatus = (userToChange) => {
         mutate({
-            userId: user.id,
             newStatus: !userToChange.enabled,
             userToChange,
         });

@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
-import { result } from "../../../../../lib/result";
 import { headers } from "next/headers";
-import { verifyidApi } from "../../../../../lib/api";
-import {user} from "../../../../lib/user";
-import { error } from "console";
+import { verifyidApi } from "../../../../lib/api";
 
 // if result (userid) ou quiz (créator id) alors afficher le résualtat sinon null
 
@@ -18,8 +15,7 @@ export async function GET (request, { params }) {
         
         // Vérifier si le quiz a été crée ou répondu par la personne
         const Verify= VerifyCreatororUser(userID)
-        const canAccessGlobalScore = Verify.length > 0;
-        return canAccessGlobalScore;
+
 
         if (canAccessGlobalScore == true) {
             const list = listByquizid(quizId)

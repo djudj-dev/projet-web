@@ -1,12 +1,12 @@
 "use client";
 import { useMutation } from "react-query";
 import { useForm } from "react-hook-form";
-import { postApi } from "../lib/client-fetch";
+import { postAuthApi } from "../lib/client-fetch";
 import { Spinner } from "./spinner";
 
-export const ChangePasswordForm = ({ user }) => {
+export const ChangePasswordForm = ({ user, jwt }) => {
     const { data, error, mutate, isLoading } = useMutation((body) =>
-        postApi("/user/change-password", body)
+        postAuthApi("auth/user/change-password", body, jwt)
     );
 
     const { register, handleSubmit } = useForm({
@@ -17,7 +17,6 @@ export const ChangePasswordForm = ({ user }) => {
         mutate({
             password,
             newPassword,
-            userId: user.id,
         });
     };
 

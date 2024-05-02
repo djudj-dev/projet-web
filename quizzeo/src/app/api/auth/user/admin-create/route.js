@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
-import { user } from "../../../../lib/user";
+import { user } from "../../../../../lib/user";
+import { getUserIdFromBearer } from "../../../../../lib/jwt-tools";
+import { headers } from "next/headers";
 
 export async function POST (request) {
-    const { email, password, enabled, role, adminId }  = await request.json()
+    const adminId = await getUserIdFromBearer( headers().get('authorization'));
+    const { email, password, enabled, role }  = await request.json()
     const finalData = await user.adminCreate({ 
         email, 
         password, 

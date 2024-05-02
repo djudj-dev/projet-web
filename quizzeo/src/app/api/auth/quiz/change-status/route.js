@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
-import { quiz } from "../../../../lib/quiz";
+import { getUserIdFromBearer } from "../../../../../lib/jwt-tools";
+import { quiz } from "../../../../../lib/quiz";
+import { headers } from "next/headers";
 
 export async function POST (request) {
-    const { quizId, status, userId } = await request.json()
+    const userId = await getUserIdFromBearer( headers().get('authorization'));
+    const { quizId, status } = await request.json()
     
     const finalData = await quiz.changeQuizStatus({ quizId, status, userId});
 

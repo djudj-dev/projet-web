@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useMutation } from "react-query";
 import { ReactQueryProvider } from "../components/react-query";
-import { postApi } from "../lib/client-fetch";
+import { postAuthApi } from "../lib/client-fetch";
 import { useAuth } from "../lib/useAuth";
 import { Spinner } from "./spinner";
 import { Redirection } from "./auth-redirection";
@@ -86,11 +86,11 @@ export const QuizCreator = () => {
     const { register, handleSubmit, unregister } = useForm({
         shouldUseNativeValidation: true,
     });
-    const { data, error, isLoading, mutate } = useMutation((body) =>
-        postApi("quiz", body)
+    const { user, jwt } = useAuth("QuizMaker");
+    const { data, isLoading, mutate } = useMutation((body) =>
+        postAuthApi("auth/quiz", body, jwt)
     );
 
-    const { user } = useAuth("QuizMaker");
 
     const onSubmit = ({ quizTitle, questions }) => {
         questions.forEach(
@@ -100,7 +100,6 @@ export const QuizCreator = () => {
 
         mutate({
             title: quizTitle,
-            creatorId: user.id,
             questions,
         });
     };

@@ -1,5 +1,5 @@
 import { prismaClientSingleton } from './prisma';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 const prisma = prismaClientSingleton();
 

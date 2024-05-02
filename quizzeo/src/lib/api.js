@@ -1,10 +1,10 @@
-import { prismaClientSingleton } from './prisma';
+import { prisma } from './prisma';
 
 
  
 export async function verifyidApi(apiKey) {
         
-    const userId= await prisma.User.findUnique({
+    const userId= await prisma.user.findUnique({
         where: {
             apiKey: apiKey,
         },

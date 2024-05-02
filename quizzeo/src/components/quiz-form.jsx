@@ -2,7 +2,7 @@
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { ReactQueryProvider } from "../components/react-query";
-import { postApi } from "../lib/client-fetch";
+import { postAuthApi } from "../lib/client-fetch";
 import { useAuth } from "../lib/useAuth";
 import { Spinner } from "./spinner";
 import { Redirection } from "./auth-redirection";
@@ -13,10 +13,10 @@ export const QuizForm = ({ quizz }) => {
         shouldUseNativeValidation: true,
     });
 
-    const { user } = useAuth("any");
+    const { user, jwt } = useAuth("any");
 
     const { data, isLoading, error, mutate } = useMutation((body) =>
-        postApi("result", body)
+        postAuthApi("auth/result", body, jwt)
     );
 
     const onSubmit = ({ reply }) => {
@@ -35,7 +35,6 @@ export const QuizForm = ({ quizz }) => {
 
         mutate({
             score,
-            userId: user.id,
             quizId: quizz.id,
         });
     };

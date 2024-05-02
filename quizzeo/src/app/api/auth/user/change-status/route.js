@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
-import { user } from "../../../../lib/user";
+import { user } from "../../../../../lib/user";
+import { getUserIdFromBearer } from "../../../../../lib/jwt-tools";
+import { headers } from "next/headers";
 
 export async function POST (request) {
-    const { userId, userToChange, newStatus } = await request.json();
+    const userId = await getUserIdFromBearer( headers().get('authorization'));
+    const { userToChange, newStatus } = await request.json();
     const finalData = await user.changeStatus({ userId, userToChange, newStatus });
 
     if (!finalData) {

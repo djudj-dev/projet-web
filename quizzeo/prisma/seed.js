@@ -1,12 +1,22 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const passwordSalt = Number(process.env.PASSWOARD_SALT);
 
 async function main() {
     // Génère un mot de passe crypté
     const hashedPassword = await bcrypt.hash("admin", passwordSalt);
 
+    const adminAlreadyCreate = await prisma.user.findUnique({
+        where: {
+            email: "admin@gmail.com"
+        }
+    })
+
+    if (adminAlreadyCreate) {
+        console.log('seed deja effectuer');
+        return 
+    }
     // Créer un utilisateur avec le rôle GlobalAdmin
     const newUser = await prisma.user.create({
         data: {
@@ -232,12 +242,12 @@ async function main() {
             {
                 quizId: quiz2.id,
                 userId: newUser.id,
-                score: 5,
+                score: 0.25,
             },
             {
                 quizId: quiz3.id,
                 userId: newUser.id,
-                score: 2,
+                score: 1,
             },
             {
                 quizId: quiz4.id,

@@ -1,12 +1,12 @@
 "use client";
 import { useMutation } from "react-query";
 import { useForm } from "react-hook-form";
-import { postApi } from "../lib/client-fetch";
+import { postAuthApi } from "../lib/client-fetch";
 import { Spinner } from "./spinner";
 
-export const CreateUserForm = ({ user }) => {
+export const CreateUserForm = ({ user, jwt }) => {
     const { data, error, mutate, isLoading } = useMutation((body) =>
-        postApi("/user/admin-create", body)
+        postAuthApi("auth/user/admin-create", body, jwt)
     );
 
     const { register, handleSubmit } = useForm({
@@ -15,7 +15,6 @@ export const CreateUserForm = ({ user }) => {
 
     const onSubmit = ({ email, password, role, enabled }) => {
         mutate({
-            adminId: user.id,
             password,
             role,
             email,

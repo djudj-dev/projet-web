@@ -12,16 +12,7 @@
 
 ```
 docker compose up -d
-cd quizzeo
-npm run dev
 
-```
-
-### Seed database :
-Ne pas oublier de cd dans /quizzeo avant d'effectuer la commande ci-dessous :
-
-```
-npm run seed
 ```
 
 ### Variable d'environnement

@@ -1,14 +1,14 @@
 'use client' 
 import { useQuery} from "react-query"
-import { getApi } from "../lib/client-fetch";
+import { getAuthApi } from "../lib/client-fetch";
 import { QuizResult } from"./quiz-result";
 import { Spinner } from "./spinner"
 1
-export const QuizResultList = ({ user }) => {
+export const QuizResultList = ({ user, jwt }) => {
 
-    const { data, isLoading, error } = useQuery ({
+    const { data } = useQuery ({
         queryKey: "user-results",
-        queryFn: () => getApi("result/"+user.id),
+        queryFn: () => getAuthApi("auth/result/"+user.id, jwt),
         enabled: user !== undefined
     })
     

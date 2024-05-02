@@ -2,12 +2,11 @@
 import { useMutation } from "react-query";
 import { useForm } from "react-hook-form";
 import { Spinner } from "./spinner";
+import { postAuthApi } from "../lib/client-fetch";
 
-import { postApi } from "../lib/client-fetch";
-
-export const ChangeEmailForm = ({ user }) => {
+export const ChangeEmailForm = ({ user, jwt }) => {
     const { data, error, mutate, isLoading } = useMutation((body) =>
-        postApi("/user/change-email", body)
+        postAuthApi("auth/user/change-email", body, jwt)
     );
 
     const { register, handleSubmit } = useForm({
@@ -17,7 +16,6 @@ export const ChangeEmailForm = ({ user }) => {
     const onSubmit = ({ newEmail }) => {
         mutate({
             newEmail,
-            userId: user.id,
         });
     };
 

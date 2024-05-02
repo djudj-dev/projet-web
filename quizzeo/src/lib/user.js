@@ -1,6 +1,7 @@
+import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
-import bcrypt from "bcrypt";
 import { PASSWORD_SALT } from "./env";
+
 
 const passwordSalt = Number(PASSWORD_SALT);
 
@@ -262,16 +263,14 @@ export const user = {
             throw error;
         }
     },
-
-    VerifyCreatorOrUser: async (userId) => {
+    verifyCreatorOrUser: async (userId) => {
         return await prisma.result.findMany({
             where: {
                 OR: [
                     { userId },
                     { quiz: { creatorId: userId } }
-                    ]
+                ]
             }
         });
     }
-        
 };

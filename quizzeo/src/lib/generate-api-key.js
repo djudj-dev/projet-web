@@ -1,8 +1,7 @@
-import Crypto from "node:crypto"
+import sha256 from 'crypto-js/sha256';
 
 export const generateApiKey = () => {  
-    return Crypto
-      .randomBytes(25)
-      .toString('base64')
-      .slice(0, 25)
+    const hash = sha256(Date.now().toString()).toString()
+
+    return hash;
   }

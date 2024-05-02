@@ -1,12 +1,12 @@
 import React from "react";
-import { getApi } from "../lib/client-fetch";
+import { getAuthApi } from "../lib/client-fetch";
 import { useQuery } from "react-query";
 import { Spinner } from "./spinner";
 
-export const StatsTable = ({ user }) => {
+export const StatsTable = ({ user, jwt }) => {
     const { data } = useQuery({
         queryKey: "quiz-admin-stat-list",
-        queryFn: () => getApi("quiz/" + user.id),
+        queryFn: () => getAuthApi("auth/quiz/" + user.id, jwt),
         enabled: user !== undefined,
     });
 

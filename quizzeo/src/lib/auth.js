@@ -1,5 +1,5 @@
 // Importation du singleton Prisma et de bcrypt
-import { prismaClientSingleton } from './prisma.js';
+import { prisma } from './prisma.js';
 const {verifyJwt} = require("./jwt-tools.js")
 
 
@@ -16,7 +16,7 @@ exports.Role = async (req, res, next) => {
         const id = verifyJwt(token);
 
         // On stock dans la variable idbdd l'utilisateur dans la bdd qui a pour id celui du tocken
-        const UserBdd= await prisma.User.findUnique({
+        const UserBdd= await prisma.user.findUnique({
             where: {
                 id: id,
             },

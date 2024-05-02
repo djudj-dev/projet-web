@@ -2,14 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import { useMutation } from "react-query";
-import { postApi } from "../lib/client-fetch";
+import { postAuthApi } from "../lib/client-fetch";
 import { Spinner } from "./spinner";
 
-export const QuizStatList = ({ quiz, user }) => {
+export const QuizStatList = ({ quiz, user, jwt }) => {
     const { title, id, creatorId, date, results, enabled } = quiz;
 
     const { data, isLoading, mutate } = useMutation((body) =>
-        postApi("quiz/change-status", body)
+        postAuthApi("auth/quiz/change-status", body, jwt)
     );
 
     const getQuizLink = () => {
@@ -20,7 +20,6 @@ export const QuizStatList = ({ quiz, user }) => {
     const changeQuizStatus = () => {
         if (user.role === "QuizCreator" || user.role === "GlobalAdmin") {
             mutate({
-                userId: user.id,
                 quizId: quiz.id,
                 status: !enabled,
             });
@@ -28,9 +27,8 @@ export const QuizStatList = ({ quiz, user }) => {
 
         if (user.role == "QuizAdmin" && enabled) {
             mutate({
-                userId: user.id,
                 quizId: quiz.id,
-                status: !enabled,
+                status: false,
             });
         }
     };
