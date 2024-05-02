@@ -1,9 +1,16 @@
 import { NextResponse } from "next/server";
 import { verifyJwt } from "../../../lib/jwt-tools";
+import { headers } from "next/headers";
 import { user } from "../../../lib/user";
 
-export async function POST (request) {
-    const { jwt } = await request.json();
+export async function GET (request) {
+    const bearer = headers().get('authorization');
+
+    if (!bearer) {
+        return NextResponse.json("Unauthorized", { status: 401 });
+    }
+
+    const jwt = bearer.substring(7, bearer.length);
     const { data: { userId }} = await verifyJwt(jwt);
 
     if (!userId) {

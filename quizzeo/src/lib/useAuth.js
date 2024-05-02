@@ -1,6 +1,6 @@
 "use client"
 import { redirect } from "next/navigation";
-import { postApi } from "./client-fetch";
+import { getAuthApi } from "./client-fetch";
 import { localJwt } from "./local-storage"
 import { useQuery } from "react-query"
 import { useEffect } from "react";
@@ -16,7 +16,7 @@ export const useAuth = (wantedRole) => {
 
     const { data, error } = useQuery ({
         queryKey: "user-auth",
-        queryFn: () => postApi("auth", { jwt }),
+        queryFn: () => getAuthApi("auth", jwt),
         enabled: jwt !== undefined
     })
 

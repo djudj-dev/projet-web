@@ -1,20 +1,31 @@
 "use client"
-const API_URL = "http://localhost:3000/api/"
+import { API_URL } from './env';
 
-const fetchApi = async(apiRoute, method, body = undefined) => {
-    const response = await fetch(API_URL + apiRoute, {
+const fetchApi = async(apiRoute, method, body = undefined, jwt = undefined) => {
+
+    const headers = {
+        'Content-Type': 'application/json',    
+    }
+
+    if (jwt) {
+        headers['Authorization'] = `Bearer ${jwt}`;
+    }
+
+    const fetchPayload = {
         method,
-        mode: "no-cors",
-        cache: "no-cache",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-    })
+        withCredentials: true,
+        credentials: 'include',
+        headers,
+    }
+    
+    body && (fetchPayload.body = JSON.stringify(body));
+
+    const response = await fetch(API_URL + apiRoute, fetchPayload)
 
     if(!response.ok) {
         throw new Error('Error with api fetching')
     }
+
     const data = await response.json();
     
     return data;
@@ -22,3 +33,5 @@ const fetchApi = async(apiRoute, method, body = undefined) => {
 
 export const getApi = (apiRoute) => fetchApi(apiRoute, "GET");
 export const postApi = (apiRoute, body) => fetchApi(apiRoute, "POST", body);
+export const getAuthApi = (apiRoute, jwt) => fetchApi(apiRoute, "GET", undefined, jwt);
+export const postAuthApi = (apiRoute, body, jwt) => fetchApi(apiRoute, "POST", body, jwt);

@@ -1,11 +1,10 @@
 import jsonwebtoken from 'jsonwebtoken';
-
-const secretSalt = process.env.SALT;
+import { SALT } from './env';
 
 export const generateJwt = async (userId) => {
-    return await jsonwebtoken.sign({ data: { userId } }, secretSalt, { expiresIn: 60 * 60 })
+    return await jsonwebtoken.sign({ data: { userId } }, SALT, { expiresIn: 60 * 60 })
 };
 
 export const verifyJwt = async (token) => {
-    return jsonwebtoken.verify(token, secretSalt);
+    return jsonwebtoken.verify(token, SALT);
 };

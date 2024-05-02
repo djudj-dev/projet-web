@@ -1,7 +1,8 @@
 import { prisma } from "./prisma";
 import bcrypt from "bcrypt";
+import { PASSWORD_SALT } from "./env";
 
-const passwordSalt = Number(process.env.PASSWOARD_SALT);
+const passwordSalt = Number(PASSWORD_SALT);
 
 export const user = {
     login: async ({ email, password }) => {

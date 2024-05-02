@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { result } from "../../../../lib/result";
+import { result } from "../../../../../lib/result";
 import { headers } from "next/headers";
 import { verifyidApi } from "../../../../../lib/api";
 import {user} from "../../../../lib/user";

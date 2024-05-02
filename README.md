@@ -35,7 +35,7 @@ le projets prend actuellement 3 variables d’environnement :
 ### Accès en local :
 
 En tapant [http://localhost:3000](http://localhost:3000) vous allez tomber sur une page de connexion, il existe un global admin déjà créer si vous avez run la seed.
-- username: admin
+- username: admin@example.com
 - password: admin
 
 a partir de ce compte vous pourrez tous faire créer d'autre compte etc...

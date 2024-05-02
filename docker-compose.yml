@@ -1,5 +1,17 @@
 version: '3.1'
-services:  
+services: 
+  app: 
+    build:
+      context: quizzeo
+      args:
+        - DATABASE_URL=postgresql://prisma:password@db:5432/mydb
+        - SALT=secret
+        - PASSWORD_SALT=10
+        - NEXT_PUBLIC_API_URL=http://localhost/api/
+    ports:
+      - 80:3000
+    networks:
+      - dbnetwork
   db:
     image: postgres
     restart: always
@@ -11,6 +23,11 @@ services:
       - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - dbnetwork
 
 volumes:
   pgdata:
+
+networks:
+  dbnetwork:

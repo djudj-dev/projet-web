@@ -1,7 +1,6 @@
 // Importation du singleton Prisma et de bcrypt
 import { prismaClientSingleton } from './prisma.js';
 const {verifyJwt} = require("./jwt-tools.js")
-const secretSalt = process.env.SALT;
 
 
 // middlewareRole

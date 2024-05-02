@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation"
 import { localJwt } from "../lib/local-storage";
 import { ReactQueryProvider } from "./react-query";
-import { postApi } from "../lib/client-fetch";
+import { getAuthApi } from "../lib/client-fetch";
 import { useQuery } from 'react-query';
 import { useEffect } from "react";
 
@@ -25,7 +25,7 @@ export const Redirection = () => {
 const ClientAuth = ({ jwt }) => {
     const { data, error } = useQuery ({
         queryKey: "user-auth",
-        queryFn: () => postApi("auth", { jwt }),
+        queryFn: () => getAuthApi("auth", jwt),
         enabled: jwt !== undefined
     })
 
