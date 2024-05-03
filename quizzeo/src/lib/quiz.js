@@ -58,7 +58,7 @@ export const quiz = {
             }
         )
     ),
-    getByCreator: async(userId) => {
+    getByCreator: async (userId) => {
         const user = await prisma.user.findUnique({
             where: {
                 id: userId
@@ -100,7 +100,7 @@ export const quiz = {
             }
         )
     },
-    getAll: async() => (
+    getAll: async () => (
         await prisma.quiz.findMany(
             {
                 select: {
@@ -113,4 +113,75 @@ export const quiz = {
             }
         )
     ),
+    getByApiKey: async ({ userId, quizId }) => {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: userId,
+                enabled: true,
+            }
+        })
+
+        if(!user) {
+            return false
+        }
+
+        const quiz = await prisma.quiz.findUnique({
+            where: {
+                id: quizId,
+            },
+            select: {
+                creatorId: true,
+                title: true,
+                enabled: true,
+                date: true,
+                results: true,
+            }
+        })
+
+        if(!quiz) {
+            return false
+        }
+
+        if(quiz.creatorId === userId) {
+            const { creatorId, ...quizData } = quiz 
+            return {
+                ...quizData,
+                results: quizData.results.map(({
+                    userId,
+                    score,
+                    date,
+                }) => {
+                    return {
+                        userId,
+                        score,
+                        date
+                    }
+                }),
+                average: `${Math.round((quizData.results.reduce((previous, current) => {
+                    return previous + current.score;
+                }, 0) / quizData.results.length) * 100)} %`
+            }
+        } 
+
+        const returnData = await prisma.result.findUnique({
+            where: {
+                userId_quizId: {
+                    userId,
+                    quizId
+                }
+            },
+            select: {
+                quiz: true,
+                user: true,
+                score: true,
+                date: true,
+            }
+        })
+
+        return { 
+            ...returnData, 
+            quiz: returnData.quiz.title, 
+            user: returnData.user.email
+        }
+    }
 }

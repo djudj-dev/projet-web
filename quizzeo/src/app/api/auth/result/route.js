@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { result } from "../../../../lib/result";
 import { headers } from "next/headers";
-import { getUserIdFromBearer } from "../../../../lib/jwt-tools";
+import { getUserIdFromBearer } from "../../../../lib/crypto-tools";
 
 export async function POST (request) {
     const userId = await getUserIdFromBearer( headers().get('authorization'));

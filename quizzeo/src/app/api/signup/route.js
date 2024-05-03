@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { generateJwt } from "../../../lib/jwt-tools";
+import { generateJwt } from "../../../lib/crypto-tools";
 import { user } from "../../../lib/user";
 
 export async function POST (request) {

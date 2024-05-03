@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getUserIdFromBearer } from "../../../../../lib/jwt-tools";
+import { getUserIdFromBearer } from "../../../../../lib/crypto-tools";
 import { quiz } from "../../../../../lib/quiz";
 import { headers } from "next/headers";
 

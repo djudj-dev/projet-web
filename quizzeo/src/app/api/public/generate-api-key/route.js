@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../lib/prisma";
-import { generateApiKey } from "../../../../lib/generate-api-key";
 import { user } from "../../../../lib/user";
+import { api } from "../../../../lib/api";
 
 export async function POST (request){
+    console.log('test')
     const { email, password } = await request.json();
 
     const userToLog = await user.login({ email, password });
@@ -12,12 +12,7 @@ export async function POST (request){
         return NextResponse.json("Forbidden", { status: 403 });
     }
 
-    const { apiKey } = await prisma.apiKey.create({
-        data: {
-            apiKey: generateApiKey(),
-            userId: userToLog.id
-        }
-    })
+    const { apiKey } = await api.createApiKey(userToLog.id)
     
     if (!apiKey) {
         return NextResponse.json("Internal Server Error", { status: 500});

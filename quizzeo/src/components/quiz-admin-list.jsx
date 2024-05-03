@@ -20,7 +20,7 @@ export const QuizResultList = ({ user, jwt }) => {
                 }
                 {
                     Object.values(data).map((quiz, index) =>  (
-                        <QuizStatList { ...{ quiz, user, key: index}} />
+                        <QuizStatList { ...{ quiz, user, key: index, jwt}} />
                     ))
                 }
             </>

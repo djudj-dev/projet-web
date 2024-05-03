@@ -1,19 +1,25 @@
 import { prisma } from './prisma';
+import { generateApiKey } from "./crypto-tools"
 
 
- 
-export async function verifyidApi(apiKey) {
+export const api = {
+    createApiKey: async (userId) => (
+        await prisma.apiKey.create({
+            data: {
+                apiKey: await generateApiKey(),
+                userId
+            }
+        })
+    ),
+    checkApiKey: async (apiKey) => (
+        await prisma.apiKey.findUnique({
+            where: {
+                apiKey,
+            },
+            select: {
+                userId: true
+            },
         
-    const userId= await prisma.user.findUnique({
-        where: {
-            apiKey: apiKey,
-        },
-        select: {
-            UserID: true
-        },
-    
-    });
-    return userId
-    
-
-} ; 
+        })
+    )
+}

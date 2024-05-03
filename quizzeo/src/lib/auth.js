@@ -1,6 +1,6 @@
 // Importation du singleton Prisma et de bcrypt
 import { prisma } from './prisma.js';
-const {verifyJwt} = require("./jwt-tools.js")
+const {verifyJwt} = require("./crypto-tools.js")
 
 
 // middlewareRole

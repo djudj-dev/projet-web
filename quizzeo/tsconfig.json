@@ -27,7 +27,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/api/public/generate-api-key/route.js"  ],
+  ],
   "exclude": [
     "node_modules"
   ]

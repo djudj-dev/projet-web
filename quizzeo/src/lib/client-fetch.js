@@ -9,7 +9,6 @@ const fetchApi = async(apiRoute, method, body = undefined, jwt = undefined) => {
 
     if (jwt) {
         headers['Authorization'] = `Bearer ${jwt}`;
-        console.log("auth", headers)
     }
 
     const fetchPayload = {

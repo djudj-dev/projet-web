@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { user } from "../../../../../lib/user";
-import { getUserIdFromBearer } from "../../../../../lib/jwt-tools";
+import { getUserIdFromBearer } from "../../../../../lib/crypto-tools";
 import { headers } from "next/headers";
 
 export async function GET(request) {

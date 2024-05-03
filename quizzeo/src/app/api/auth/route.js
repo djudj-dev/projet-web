@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { verifyJwt } from "../../../lib/jwt-tools";
+import { verifyJwt } from "../../../lib/crypto-tools";
 import { headers } from "next/headers";
 import { user } from "../../../lib/user";
 
