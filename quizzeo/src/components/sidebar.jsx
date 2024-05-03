@@ -67,6 +67,19 @@ const GlobalAdminNav = () => (
                 height={18}
             />
             Liste des quiz
+        </Link>{" "}
+        <Link
+            href="/global-admin/log-list"
+            className="py-1 px-1 rounded hover:bg-[#84602C] hover:text-white flex gap-[10px]"
+        >
+            <Image
+                src="/listIcon.svg"
+                alt=""
+                className=""
+                width={23}
+                height={23}
+            />
+            Journalisation
         </Link>
         <Link
             href="/connexion/logout"
