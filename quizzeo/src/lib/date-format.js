@@ -1,5 +1,4 @@
-// Fonction pour formater une chaîne de date au format "jour-mois-année"
-function dateFormat(dateString) {
+export const dateFormat = (dateString) => {
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString("fr-FR", {
         day: "2-digit",
@@ -8,5 +7,3 @@ function dateFormat(dateString) {
     });
     return formattedDate;
 }
-
-export default dateFormat;

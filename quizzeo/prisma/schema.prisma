@@ -77,7 +77,6 @@ model Logs {
 
 enum Action {
   loggin
-  startQuiz
   FinishQuiz
   signIn
 }

@@ -8,7 +8,7 @@ import { Spinner } from "./spinner";
 import { Redirection } from "./auth-redirection";
 import Image from "next/image";
 
-export const QuizForm = ({ quizz }) => {
+export const QuizForm = ({ quiz }) => {
     const { register, handleSubmit } = useForm({
         shouldUseNativeValidation: true,
     });
@@ -22,11 +22,11 @@ export const QuizForm = ({ quizz }) => {
     const onSubmit = ({ reply }) => {
         const stats = {
             goodReply: 0,
-            questionsNumber: quizz.questions.length,
+            questionsNumber: quiz.questions.length,
         };
 
         reply.forEach((value, index) => {
-            if (quizz.questions[index].goodAnswer == value) {
+            if (quiz.questions[index].goodAnswer == value) {
                 stats.goodReply++;
             }
         });
@@ -35,7 +35,7 @@ export const QuizForm = ({ quizz }) => {
 
         mutate({
             score,
-            quizId: quizz.id,
+            quizId: quiz.id,
         });
     };
 
@@ -43,7 +43,7 @@ export const QuizForm = ({ quizz }) => {
         return <Spinner />;
     }
 
-    if (data || !quizz.enabled) {
+    if (data || !quiz.enabled) {
         return <Redirection />;
     }
 
@@ -55,7 +55,7 @@ export const QuizForm = ({ quizz }) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            {quizz.questions.map((data, index) => {
+            {quiz.questions.map((data, index) => {
                 const { title, answers } = data;
                 return (
                     <div className="flex flex-col m-4" key={index}>
@@ -88,7 +88,7 @@ export const QuizForm = ({ quizz }) => {
     );
 };
 
-export const QuizFormPage = ({ quizz }) => (
+export const QuizFormPage = ({ quiz }) => (
     <ReactQueryProvider>
         <div className="bg-gray-100 min-h-screen px-24 py-10 flex flex-col gap-5 items-center">
             <Image
@@ -98,8 +98,8 @@ export const QuizFormPage = ({ quizz }) => (
                 className="rounded shadow-sm"
             />
             <div className="w-full bg-white p-8 rounded shadow-md">
-                <h2 className="text-2xl  font-semibold mb-6">{quizz.title}</h2>
-                <QuizForm quizz={quizz} />
+                <h2 className="text-2xl  font-semibold mb-6">{quiz.title}</h2>
+                <QuizForm quiz={quiz} />
             </div>
         </div>
     </ReactQueryProvider>

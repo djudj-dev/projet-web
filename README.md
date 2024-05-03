@@ -15,6 +15,19 @@ docker compose up -d
 
 ```
 
+Si vous avez deja deployer avec une ancienne version il faudra re-build le coantiner pour ceci :
+```
+docker compose up -d --build --no-deps
+
+```
+
+Si vous souhiatez deployer sur une ip distante il faudra précisier avec une variable d'environnement
+
+```
+API_IP=http://[hostip]/api docker compose up -d --build --no-deps
+
+```
+
 ### Variable d'environnement
 
 le projets prend actuellement 3 variables d’environnement :
@@ -22,6 +35,7 @@ le projets prend actuellement 3 variables d’environnement :
 - `DATABASE_URL`: est utiliser par prisma pour la connexion a la DB
 - `SALT`: est utiliser pour la création/vérification des jwt
 - `PASWORD_SALT`: est utiliser pour la création/vérification des password
+- `NEXT_PUBLIC_API_URL`: est utiliser pour créer l'addresse de l'api à requeter cotès client
 
 ### Accès en local :
 

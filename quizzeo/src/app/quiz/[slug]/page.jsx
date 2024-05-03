@@ -5,7 +5,7 @@ export default async function Page({ params }) {
     const currentQuiz = await quiz.getWithQuestion(params.slug)
     return (
         <>
-            <QuizFormPage quizz={currentQuiz}/>
+            <QuizFormPage quiz={currentQuiz}/>
         </>
     )
 }

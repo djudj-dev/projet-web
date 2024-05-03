@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery, useMutation } from "react-query";
 import { getAuthApi, postAuthApi } from "../lib/client-fetch";
 import { Spinner } from "./spinner";
-import dateFormat from "../lib/dateFormat";
+import { dateFormat } from "../lib/date-format";
 
 const RoleSelect = ({ user, actualUser, jwt }) => {
     const { error, mutate } = useMutation((body) =>

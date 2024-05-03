@@ -1,3 +1,5 @@
+import { dateFormat } from "../lib/date-format"
+
 export const QuizResult = ({ title, score, date }) => {
     return (
         <div className="flex flex-col gap-3 w-11/12 m-auto shadow-tile bg-white rounded p-[10px] text-sm">
@@ -6,7 +8,7 @@ export const QuizResult = ({ title, score, date }) => {
                 <p className="font-bold">{title}</p>
                 <p className="text-[#6A6363] flex items-center justify-center">
                     Fait le{" "}
-                    {new Intl.DateTimeFormat("en-US").format(new Date(date))}
+                    {dateFormat(date)}
                 </p>
                 {/* Conteneur pour le statut et la date de création */}
             </div>

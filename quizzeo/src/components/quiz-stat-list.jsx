@@ -4,6 +4,7 @@ import React from "react";
 import { useMutation } from "react-query";
 import { postAuthApi } from "../lib/client-fetch";
 import { Spinner } from "./spinner";
+import { dateFormat } from "../lib/date-format";
 
 export const QuizStatList = ({ quiz, user, jwt }) => {
     const { title, id, creatorId, date, results, enabled } = quiz;
@@ -57,7 +58,7 @@ export const QuizStatList = ({ quiz, user, jwt }) => {
                 </div>
                 <p className="text-[#6A6363] flex items-center justify-center">
                     Créé le{" "}
-                    {new Intl.DateTimeFormat("en-US").format(new Date(date))}
+                    {dateFormat(date)}
                 </p>
             </div>
             <p>
