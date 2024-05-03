@@ -12,20 +12,17 @@
 
 ```
 docker compose up -d
-
 ```
 
 Si vous avez deja deployer avec une ancienne version il faudra re-build le coantiner pour ceci :
 ```
 docker compose up -d --build --no-deps
-
 ```
 
 Si vous souhiatez deployer sur une ip distante il faudra précisier avec une variable d'environnement
 
 ```
-API_IP=http://[hostip]/api/ docker compose up -d --build --no-deps
-
+API_URL=http://[hostip]/api/ docker compose up -d --build --no-deps
 ```
 
 ### Variable d'environnement
