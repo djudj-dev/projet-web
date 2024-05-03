@@ -24,7 +24,7 @@ docker compose up -d --build --no-deps
 Si vous souhiatez deployer sur une ip distante il faudra précisier avec une variable d'environnement
 
 ```
-API_IP=http://[hostip]/api docker compose up -d --build --no-deps
+API_IP=http://[hostip]/api/ docker compose up -d --build --no-deps
 
 ```
 
