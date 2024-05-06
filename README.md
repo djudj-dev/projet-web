@@ -330,4 +330,151 @@ Ce schéma Prisma définit les modèles de données de notre application :
 
 ## Documentation de l'API
 
-A FAIRE
+### Création d'un utilisateur
+
+Création d'un utilisateur.
+
+**Endpoint** : `POST /api/signup`
+
+**Cors de la requête** :
+
+```json
+{
+    "email": "john.doe@gmail.com",
+    "password": "password"
+}
+```
+
+**Réponse :**
+
+```json
+{
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7fSwiaWF0IjoxNzE0OTk3NzU4LCJleHAiOjE3MTUwMDEzNTh9.TCZKjN2bH16QyKA7rz_d9lgpatrhHzhe_CUwcJd6dyg",
+    "user": {
+        "id": "e545f995-9801-4ae9-9843-bd4a154fe798",
+        "email": "john.doe@gmail.com",
+        "password": "$2a$10$9i7fo5lh8h3RSWOaryK5MOfb4Qeo.L60S5o5fwK9nXpt6.tCm1bfO",
+        "role": "User",
+        "enabled": false,
+        "date": "2024-05-06T12:15:58.463Z"
+    }
+}
+```
+
+**Codes d'état HTTP :**
+
+-   `200 OK` : La requête a réussi et les données sont renvoyées.
+-   `500 Internal Server Error` : Erreur interne du serveur
+
+### Connexion d'un utilisateur
+
+Connexion d'un utilisateur.
+
+**Endpoint** : `POST /api/login`
+
+**Cors de la requête** :
+
+```json
+{
+    "email": "john.doe@gmail.com",
+    "password": "password"
+}
+```
+
+**Réponse :**
+
+```json
+{
+    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7fSwiaWF0IjoxNzE0OTk3NzU4LCJleHAiOjE3MTUwMDEzNTh9.TCZKjN2bH16QyKA7rz_d9lgpatrhHzhe_CUwcJd6dyg",
+    "user": {
+        "id": "e545f995-9801-4ae9-9843-bd4a154fe798",
+        "email": "john.doe@gmail.com",
+        "password": "$2a$10$9i7fo5lh8h3RSWOaryK5MOfb4Qeo.L60S5o5fwK9nXpt6.tCm1bfO",
+        "role": "User",
+        "enabled": false,
+        "date": "2024-05-06T12:15:58.463Z"
+    }
+}
+```
+
+**Codes d'état HTTP :**
+
+-   `200 OK` : La requête a réussi et les données sont renvoyées.
+-   `403 Forbidden` : Accès refusé
+
+### Création d'une clé API
+
+Création d'une clé API.
+
+**Endpoint** : `POST /api/public/generate-api-key`
+
+**Cors de la requête** :
+
+```json
+{
+    "email": "john.doe@gmail.com",
+    "password": "password"
+}
+```
+
+**Réponse :**
+
+```json
+{
+    "apiKey": "2bac112b30a80b5df2f1556d5763bafef79b225db51e214fc86e4a324a6fac78"
+}
+```
+
+**Codes d'état HTTP :**
+
+-   `200 OK` : La requête a réussi et les données sont renvoyées.
+-   `403 Forbidden` : Accès refusé
+
+### Obtenir un quiz
+
+Création d'une clé API.
+
+**Endpoint** : `GET /api/public/{quizId}`
+
+**Paramètres de chemin** : `quizId` : Identifiant du quiz
+
+**En-têtes de requête** : `api-key` : Clé API de l'utilisateur
+
+**Réponse :**
+
+```json
+{
+    "questions": [
+        {
+            "id": "1cfe6965-2962-478e-b86a-d4c29adf3bb6",
+            "title": "Quelle est la capitale de la France ?",
+            "quizId": "a69f11bc-dd99-4884-a5d1-867bbf12ed51",
+            "answers": "[Array]",
+            "goodAnswer": "0"
+        },
+        {
+            "id": "9794188a-04ce-4af7-96c9-46febef2d50e",
+            "title": "Quelle est la capitale de l'Italie ?",
+            "quizId": "a69f11bc-dd99-4884-a5d1-867bbf12ed51",
+            "answers": "[Array]",
+            "goodAnswer": "1"
+        }
+    ],
+    "title": "Quiz sur les capitales",
+    "id": "a69f11bc-dd99-4884-a5d1-867bbf12ed51",
+    "creator": {
+        "id": "36b64c70-b96b-49fe-b0fb-1081db7755c9",
+        "email": "admin@gmail.com",
+        "password": "$2a$10$/9MdKgnSjYJox/bZfnm2Nu8CMt4UwuCGa4kvs0oDggBhqu6swtmLq",
+        "role": "GlobalAdmin",
+        "enabled": "true",
+        "date": "2024-05-06T08:51:25.027Z"
+    },
+    "enabled": "true"
+}
+```
+
+**Codes d'état HTTP :**
+
+-   `200 OK` : La requête a réussi et les données sont renvoyées.
+-   `403 Forbidden` : Accès refusé
