@@ -17,6 +17,9 @@ export const logs = {
             }
         })
     ),
+    getAll: async () => (
+        await prisma.logs.findMany()
+    )
 }
 
 export const ACTION = {

@@ -1,39 +1,22 @@
+"use client"
 import React from "react";
 import { dateFormat } from "../lib/date-format";
+import { getAuthApi } from "../lib/client-fetch";
+import { useQuery } from "react-query";
+import { Spinner } from "./spinner";
 
-//TODO: données à supprimer
-const data = [
-    {
-        userId: "1bf87443-f77d-4c05-9572-6ab3d80daa14",
-        ip: "192.168.20.1",
-        action: "loggin",
-        additionalInformation: "Connexion autorisée",
-        date: "2024-05-03 08:57:21.354",
-    },
-    {
-        userId: "1bf87443-f77d-4c05-9572-6ab3d80daa14",
-        ip: "192.168.20.1",
-        action: "loggin",
-        additionalInformation: "Connexion autorisée",
-        date: "2024-05-03 08:57:21.354",
-    },
-    {
-        userId: "1bf87443-f77d-4c05-9572-6ab3d80daa14",
-        ip: "192.168.20.1",
-        action: "loggin",
-        additionalInformation: "Connexion autorisée",
-        date: "2024-05-03 08:57:21.354",
-    },
-    {
-        userId: "1bf87443-f77d-4c05-9572-6ab3d80daa14",
-        ip: "192.168.20.1",
-        action: "loggin",
-        additionalInformation: "Connexion autorisée",
-        date: "2024-05-03 08:57:21.354",
-    },
-];
+export const LogTable = ({ jwt }) => {
 
-const LogTable = () => {
+    const { data } = useQuery({
+        queryKey: "user-logs-list",
+        queryFn: () => getAuthApi("auth/logs", jwt),
+        enabled: jwt !== undefined,
+    });
+
+    if (!data) {
+        return <Spinner />
+    }
+
     return (
         <div className=" mt-[46px]">
             <table className="table-auto">
@@ -60,10 +43,10 @@ const LogTable = () => {
                     </tr>
                 </thead>
                 <tbody className="text-gray-600 text-xs bg-white">
-                    {/* // Boucle sur les données des logs pour générer les lignes du tableau */}
-                    {data.map((log, index) => {
-                        return (
-                            <tr
+                    { 
+                         Object.values(data).map(({ip, userId, action, additionalInformation, date}, index) => {
+                            return (
+                                <tr
                                 key={index}
                                 className="border-b border-gray-200 hover:bg-gray-100"
                             >
@@ -71,27 +54,27 @@ const LogTable = () => {
                                     {index + 1}
                                 </td>
                                 <td className="py-3 px-6 text-center">
-                                    {log.userId}
+                                    {userId}
                                 </td>
                                 <td className="py-3 px-6 text-center">
-                                    {log.ip}
+                                    {ip}
                                 </td>
                                 <td className="py-3 px-6 text-center">
-                                    {log.action}
+                                    {action}
+                                </td>
+                                <td className="py-3 px-6 text-center overflow-scroll">
+                                    {additionalInformation}
                                 </td>
                                 <td className="py-3 px-6 text-center">
-                                    {log.additionalInformation}
-                                </td>
-                                <td className="py-3 px-6 text-center">
-                                    {dateFormat(log.date)}
+                                    {dateFormat(date)}
                                 </td>
                             </tr>
-                        );
-                    })}
+                            )
+                        })
+                    }
                 </tbody>
             </table>
         </div>
     );
 };
 
-export default LogTable;
