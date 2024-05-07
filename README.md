@@ -59,7 +59,7 @@ Il est ici précisé que le rôle `GlobalAdmin` permettra de tester toutes les f
 
 ### Variable d'environnement
 
-Le projet contient actuellement les variables d’environnement suivantes :
+Le projet contient actuellement les variables d’environnement ci-après, il est ici précisé que ces variables d'environnement ne sont pas destinées à la production :
 
 -   `DATABASE_URL`: l'URL utilisé par Prisma pour la connexion à la base de Donnée.
 -   `SALT`: le mot de passe utilisé pour la création/vérification des jwt.
